@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BackButton } from "@/components/BackButton";
 import { Nav } from "@/components/Nav";
 import { Footer, btnRed, btnWhite, wrap } from "@/components/Sections";
+import { Reveal } from "@/components/Reveal";
 import { StickyDiscord } from "@/components/StickyDiscord";
 import { content } from "@/content/site";
 
@@ -82,7 +83,7 @@ export default async function GamePage({ params }: { params: Promise<{ game: str
 
       <main>
         <section aria-labelledby="players-title" className="on-dark tex-dark slab relative bg-ink text-white">
-          <div className={wrap}>
+          <Reveal className={wrap}>
             {gameTeams.length > 0 ? (
               <div className="space-y-16">
                 {gameTeams.map((team, i) => (
@@ -155,7 +156,7 @@ export default async function GamePage({ params }: { params: Promise<{ game: str
                 ))}
               </ul>
             </div>
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

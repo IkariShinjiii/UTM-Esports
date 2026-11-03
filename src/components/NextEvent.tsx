@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { EsportsEvent } from "@/content/types";
 import { bgPhoto } from "./bgPhoto";
+import { Reveal } from "./Reveal";
 
 const when = new Intl.DateTimeFormat("en-PH", {
   weekday: "long",
@@ -54,7 +55,7 @@ export function NextEvent({
       style={bgPhoto("events")}
       className="on-dark tex-dark slab ghost relative scroll-mt-4 bg-ink text-white [--gop:0.12] [--gpos:100%_40%]"
     >
-      <div className={wrap}>
+      <Reveal className={wrap}>
         <h2
           id="next-event-title"
           className="font-display text-[clamp(2rem,4.4vw,3.25rem)] font-extrabold italic uppercase leading-[1] tracking-[-0.01em]"
@@ -108,7 +109,7 @@ export function NextEvent({
             <p className="mt-4 text-lg">Follow our Discord to hear first.</p>
           </div>
         )}
-      </div>
+      </Reveal>
     </section>
   );
 }

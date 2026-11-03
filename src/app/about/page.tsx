@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BackButton } from "@/components/BackButton";
 import { Nav } from "@/components/Nav";
 import { Footer, btnRed, h2, wrap } from "@/components/Sections";
+import { Reveal } from "@/components/Reveal";
 import { StickyDiscord } from "@/components/StickyDiscord";
 import { content } from "@/content/site";
 
@@ -33,7 +34,7 @@ export default function AboutPage() {
           aria-labelledby="mission-title"
           className="tex-light slab ghost relative bg-white [--gpos:100%_50%]"
         >
-          <div className={`${wrap} grid gap-16 md:grid-cols-2 md:gap-20`}>
+          <Reveal className={`${wrap} grid gap-16 md:grid-cols-2 md:gap-20`}>
             <div>
               <h2 id="mission-title" className={h2}>
                 Mission
@@ -46,14 +47,14 @@ export default function AboutPage() {
               </h2>
               <p className="mt-4 max-w-[60ch] text-lg leading-relaxed">{about.vision}</p>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         <section
           aria-labelledby="story-title"
           className="on-dark tex-dark slab ghost relative bg-ink text-white [--gop:0.12] [--gpos:100%_50%]"
         >
-          <div className={`${wrap} grid gap-12 md:grid-cols-2 md:gap-20`}>
+          <Reveal className={`${wrap} grid gap-12 md:grid-cols-2 md:gap-20`}>
             <div>
               <h2 id="story-title" className={h2}>
                 Our story
@@ -70,7 +71,7 @@ export default function AboutPage() {
                 </Link>
               </div>
             )}
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

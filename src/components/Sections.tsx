@@ -3,6 +3,7 @@ import { content } from "@/content/site";
 import { bgPhoto } from "./bgPhoto";
 import { resultSlug } from "@/content/slug";
 import { ClipTile } from "./ClipTile";
+import { Reveal } from "./Reveal";
 import { SocialIcon } from "./SocialIcon";
 
 export const wrap = "mx-auto max-w-[90rem] px-6 md:px-12";
@@ -40,7 +41,7 @@ export function Results() {
       aria-labelledby="results-title"
       className="on-dark tex-dark slab ghost relative scroll-mt-4 bg-ink text-white [--gop:0.1] [--gpos:100%_50%]"
     >
-      <div className={wrap}>
+      <Reveal className={wrap}>
         <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
           <div>
             <h2 id="results-title" className={h2}>
@@ -61,8 +62,9 @@ export function Results() {
             ))}
           </ul>
         </div>
-      </div>
+      </Reveal>
 
+      <Reveal delay={150}>
       <div
         role="region"
         aria-label="Our results, scroll sideways"
@@ -116,6 +118,7 @@ export function Results() {
           );
         })}
       </div>
+      </Reveal>
     </section>
   );
 }
@@ -129,7 +132,7 @@ export function Join() {
       aria-labelledby="join-title"
       className="on-dark field tex-red slab ghost relative scroll-mt-4 text-white [--gpos:100%_60%]"
     >
-      <div className={wrap}>
+      <Reveal className={wrap}>
         <h2 id="join-title" className={h2}>
           Join the squad
         </h2>
@@ -155,7 +158,7 @@ export function Join() {
             Join our Discord
           </a>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -177,17 +180,17 @@ export function Teams() {
       aria-labelledby="teams-title"
       className="tex-light slab ghost relative scroll-mt-4 bg-white [--gpos:100%_50%]"
     >
-      <div className={wrap}>
+      <Reveal className={wrap}>
         <h2 id="teams-title" className={h2}>
           Teams
         </h2>
 
         <ul className="mt-10 grid gap-3 md:grid-cols-2 md:gap-4">
-          {tiles.map((g) => {
+          {tiles.map((g, i) => {
             const live = g.teams.length > 0;
             const players = g.teams.reduce((n, t) => n + t.players.length, 0);
             return (
-              <li key={g.id} className="md:[&:last-child:nth-child(odd)]:col-span-2">
+              <Reveal as="li" key={g.id} delay={(i % 2) * 120} className="md:[&:last-child:nth-child(odd)]:col-span-2">
                 <Link
                   href={`/teams/${g.id}`}
                   data-track={`team_${g.id}`}
@@ -219,11 +222,11 @@ export function Teams() {
                     </span>
                   </span>
                 </Link>
-              </li>
+              </Reveal>
             );
           })}
         </ul>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -237,17 +240,17 @@ export function Highlights() {
       aria-labelledby="highlights-title"
       className="on-dark field tex-red slab ghost relative scroll-mt-4 text-white [--gpos:0%_50%]"
     >
-      <div className={wrap}>
+      <Reveal className={wrap}>
         <h2 id="highlights-title" className={h2}>
           Highlights
         </h2>
         <ul className="mt-10 grid gap-10 md:grid-cols-[3fr_2fr_2fr] md:items-start md:gap-8">
           {content.moments.map((m, i) => (
-            <li key={m.image} className={i === 1 ? "md:mt-14" : i === 2 ? "md:mt-7" : ""}>
+            <Reveal as="li" key={m.image} delay={i * 150} className={i === 1 ? "md:mt-14" : i === 2 ? "md:mt-7" : ""}>
               <ClipTile m={m} />
               <p className="mt-4 font-display text-xl font-bold italic uppercase leading-none">{m.title}</p>
               <p className="mt-1 text-base">{m.caption}</p>
-            </li>
+            </Reveal>
           ))}
         </ul>
         <div className="mt-10">
@@ -255,7 +258,7 @@ export function Highlights() {
             Join our Discord
           </a>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -276,13 +279,13 @@ export function Community() {
       style={bgPhoto("community", 0.12)}
       className="tex-light slab ghost relative scroll-mt-4 bg-white [--gpos:0%_40%]"
     >
-      <div className={wrap}>
+      <Reveal className={wrap}>
         <h2 id="community-title" className={h2}>
           Community
         </h2>
         <ul className="mt-10 grid gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-4">
-          {tiles.map(([name, verb, href]) => (
-            <li key={name}>
+          {tiles.map(([name, verb, href], i) => (
+            <Reveal as="li" key={name} delay={i * 120}>
               <a
                 href={href}
                 data-track={`community_${name.toLowerCase()}`}
@@ -298,10 +301,10 @@ export function Community() {
                   </span>
                 </span>
               </a>
-            </li>
+            </Reveal>
           ))}
         </ul>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -316,7 +319,7 @@ export function Partner() {
       style={bgPhoto("partners")}
       className="on-dark tex-dark slab ghost relative scroll-mt-4 bg-ink text-white [--gop:0.12] [--gpos:100%_50%]"
     >
-      <div className={wrap}>
+      <Reveal className={wrap}>
         {sponsors.length > 0 && (
           <div className="mb-16">
             <h2 className={h2}>Our partners</h2>
@@ -364,7 +367,7 @@ export function Partner() {
             </a>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -378,7 +381,7 @@ export function Faq() {
       aria-labelledby="faq-title"
       className="tex-light slab ghost relative scroll-mt-4 bg-white [--gpos:0%_30%]"
     >
-      <div className={`${wrap} grid gap-14 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-20`}>
+      <Reveal className={`${wrap} grid gap-14 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-20`}>
         <div>
           <h2 id="faq-title" className={h2}>
             FAQ
@@ -403,43 +406,75 @@ export function Faq() {
             Mission and vision
           </Link>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
 
 // 10. Footer: contact, social links, privacy notice.
 export function Footer() {
-  const { settings } = content;
-  const links = [
-    ["Discord", settings.social.discord],
-    ["Facebook", settings.social.facebook],
-    ["Instagram", settings.social.instagram],
-    ["TikTok", settings.social.tiktok],
-    ["Contact", `mailto:${settings.contactEmail}`],
-    ["Privacy notice", settings.privacyUrl],
-  ] as const;
+  const { settings, games } = content;
+  const col = "text-base";
+  const head = "font-display text-xl font-extrabold italic uppercase leading-none text-track";
+  const link = "inline-block py-2 hover:underline hover:underline-offset-4";
+  const columns: { title: string; items: [string, string][] }[] = [
+    { title: "Play", items: [...Object.entries(games).map(([id, name]): [string, string] => [name, `/teams/${id}`]), ["Join us", "/#join"]] },
+    { title: "Watch", items: [["Results", "/#results"], ["Events", "/#events"], ["Highlights", "/#highlights"], ["About", "/about"]] },
+    {
+      title: "Connect",
+      items: [
+        ["Discord", settings.social.discord],
+        ["Facebook", settings.social.facebook],
+        ["Instagram", settings.social.instagram],
+        ["TikTok", settings.social.tiktok],
+      ],
+    },
+    { title: "Partners", items: [["CDG Solutions", "/#partners"], ["Nbrims", "/#partners"], ["Contact", `mailto:${settings.contactEmail}`]] },
+  ];
   return (
-    <footer className="on-dark tex-dark slab relative bg-ink pb-28 text-white md:pb-12">
-      <div className={`${wrap} flex flex-col gap-6 md:flex-row md:items-center md:justify-between`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/utm-logo-white.png" alt="UTM Esports" width={900} height={813} className="h-16 w-auto self-start" />
-        <ul className="flex flex-wrap gap-x-6 gap-y-2 text-base font-semibold uppercase tracking-wide">
-          {links.map(([label, href]) => (
-            <li key={label}>
-              <a href={href} className="inline-block py-2 hover:underline hover:underline-offset-4">
-                {label}
+    <footer className="on-dark relative bg-ink text-white">
+      <div aria-hidden className="finish-line" />
+      <div className="foot-dragon tex-dark pb-28 md:pb-12">
+        <Reveal className={`${wrap} pt-12`}>
+          <div className="flex flex-col gap-6 border-b border-white/25 pb-12 md:flex-row md:items-center md:justify-between">
+            <p className="font-display text-[clamp(1.75rem,3.4vw,2.5rem)] font-extrabold italic uppercase leading-[1]">
+              Ready to play? Join the roster.
+            </p>
+            <a href={settings.discordInvite} data-track="discord_footer" className={btnWhite + " self-start"}>
+              Join the Discord
+            </a>
+          </div>
+          <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.3fr_1fr_1fr_1fr_1fr]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/utm-logo-white.png" alt="UTM Esports" width={900} height={813} className="col-span-2 h-20 w-auto self-start md:col-span-1" />
+            {columns.map((c) => (
+              <nav key={c.title} aria-label={c.title}>
+                <p className={head}>{c.title}</p>
+                <ul className={`mt-4 ${col} font-semibold`}>
+                  {c.items.map(([label, href]) => (
+                    <li key={label + href}>
+                      <a href={href} className={link}>
+                        {label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
+          <div className="mt-16 flex flex-col gap-3 border-t border-white/25 pt-8">
+            <p className="text-base">
+              © {new Date().getFullYear()} {settings.orgName}. {settings.tagline}{" "}
+              <a href={settings.privacyUrl} className="underline underline-offset-4 hover:no-underline">
+                Privacy notice
               </a>
-            </li>
-          ))}
-        </ul>
-        <p className="text-base">
-          © {new Date().getFullYear()} {settings.orgName}. {settings.tagline}
-        </p>
-        <p className="max-w-[60ch] text-sm text-white/80 md:basis-full">
-          Game names, logos and character art belong to their publishers (Riot Games, Moonton and Tencent). UTM Esports is
-          not affiliated with or endorsed by them.
-        </p>
+            </p>
+            <p className="max-w-[60ch] text-sm text-white/80">
+              Game names, logos and character art belong to their publishers (Riot Games, Moonton and Tencent). UTM Esports
+              is not affiliated with or endorsed by them.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </footer>
   );

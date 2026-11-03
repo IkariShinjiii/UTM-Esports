@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Kanit } from "next/font/google";
 import { content } from "@/content/site";
+import { Preloader } from "@/components/Preloader";
 import "./globals.css";
 
 // Heavy italic display, wide and forward-leaning like the UTM wordmark; plain Barlow for text.
@@ -31,8 +32,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${sans.variable} ${display.variable} antialiased`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(location.search.indexOf("pre=1")>-1){sessionStorage.removeItem("utm-pre-seen")}else if(sessionStorage.getItem("utm-pre-seen")){document.documentElement.setAttribute("data-pre-skip","")}}catch(e){}`,
+          }}
+        />
+        <Preloader />
         {children}
       </body>
     </html>
