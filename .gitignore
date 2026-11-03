@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Impeccable working files (screenshots, mocks, build state) and local tool folders
+/.impeccable/review/
+/.impeccable/mocks/
+/.impeccable/build/
+/.claude/

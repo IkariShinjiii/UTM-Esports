@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "export", // static, database-free site
+  images: { unoptimized: true }, // required for static export; optimize images at build time instead
 };
 
 export default nextConfig;

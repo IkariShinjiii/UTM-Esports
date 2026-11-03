@@ -1,26 +1,214 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Cut Through: the UTM logo's own construction. A red field, white knife cuts at the dragon's jaw
+   angle (18 degrees), sheared italic type, and a darker-red ghost layer behind everything. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-track: #d4232b; /* red for text and buttons on white */
+  --color-flame: #e4181e; /* the bright end of the logo's red gradient */
+  --color-crimson: #6b0f12; /* the deep end of the gradient */
+  --color-ink: #16090a;
+  --font-sans: var(--font-sans-family), system-ui, sans-serif;
+  --font-display: var(--font-display-family), "Arial Narrow", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --cut: 18deg;
+  /* How far each section's top edge is cut: a shallow echo of the jaw slash */
+  --rise: clamp(28px, 5vw, 72px);
+}
+
+html {
+  background: #fff;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  scroll-padding-bottom: 5rem;
+  scrollbar-color: var(--color-track) #f3ebe8;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+::selection {
+  background: var(--color-track);
+  color: #fff;
+}
+.on-dark ::selection {
+  background: #fff;
+  color: var(--color-track);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-track);
+  outline-offset: 4px;
+}
+.on-dark :focus-visible {
+  outline-color: #fff;
+}
+
+/* The red field: the logo's gradient, deep crimson at top left to bright red at bottom right */
+.field {
+  background: linear-gradient(135deg, var(--color-crimson) 0%, #b3151b 45%, var(--color-flame) 100%);
+}
+
+/* Section slabs: each starts with a shallow diagonal cut, overlapping the section above.
+   In the components layer so a section can still override its own padding. */
+@layer components {
+  .slab {
+    margin-top: calc(var(--rise) * -1);
+    padding-top: calc(var(--rise) + 4rem);
+    padding-bottom: calc(var(--rise) + 3rem);
+    clip-path: polygon(0 var(--rise), 100% 0, 100% 100%, 0 100%);
+  }
+  @media (min-width: 768px) {
+    .slab {
+      padding-top: calc(var(--rise) + 6rem);
+      padding-bottom: calc(var(--rise) + 5rem);
+    }
+  }
+}
+
+/* Buttons and plates sheared at the logo angle (18px offset on a 56px-tall button) */
+.cut-btn {
+  clip-path: none;
+}
+/* Boxes are plain rectangles now; the shape classes stay as names only */
+/* Hover: buttons and tiles lift slightly with a soft shadow. Colors switch instantly. */
+.cut-btn,
+.lift {
+  transition: transform 140ms ease-out, box-shadow 140ms ease-out;
+}
+.cut-btn:hover,
+.lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgb(0 0 0 / 0.28);
+}
+.cut-btn:active,
+.lift:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.25);
+}
+.cut-btn:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 4px;
+}
+.cut-plate {
+  clip-path: none;
+}
+/* Player cards: two opposite corners cut at the logo angle */
+.cut-card {
+  clip-path: none;
+}
+/* Photo frames cut at the same angle on a 16:9 box */
+.slant {
+  clip-path: none;
+}
+/* A box skewed at the logo angle, with its content standing upright */
+.skew {
+  transform: none;
+}
+.unskew {
+  transform: none;
+}
+
+.results-track {
+  scrollbar-color: var(--color-track) transparent;
+  scrollbar-width: thin;
+  scroll-padding-inline: 1.5rem;
+}
+
+/* The dark-red ghost dragon behind a section, like the shadow behind the logo.
+   Set --gpos on the section to place it. */
+.ghost {
+  position: relative;
+  isolation: isolate;
+}
+/* The UTM dragon, behind everything. It stays in the middle of the screen while the page scrolls
+   (a fixed background inside each section) and is tinted to contrast that section: white on red,
+   red on black, ink on white. It lives behind the content, never over it. A section that sets its own
+   --ghost-img photo shows that instead. */
+.field {
+  --dragon-img: url("/images/dragon-white.webp");
+  --dragon-op: 0.16;
+}
+.tex-dark {
+  --dragon-img: url("/images/dragon-red.webp");
+  --dragon-op: 0.2;
+}
+.tex-light {
+  --dragon-img: url("/images/dragon-ink.webp");
+  --dragon-op: 0.09;
+}
+.ghost::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--ghost-img, var(--dragon-img));
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: var(--ghost-size, min(88vw, 108vh) auto);
+  background-attachment: var(--ghost-attach, fixed);
+  opacity: var(--ghost-op, var(--dragon-op, 0.1));
+  filter: var(--ghost-filter, none);
+}
+.ghost[style*="--ghost-img"]::after {
+  background-position: var(--gpos, center);
+  background-attachment: scroll;
+  opacity: var(--gop, 0.2);
+}
+
+/* Textures: drawn in code (no image files), faint, always behind the content.
+   - tex-dark: film grain + the hexagon mesh from the jersey fabric
+   - tex-red: speed lines at the jaw angle (from the Crimson Cloudburst graphic) + grain
+   - tex-light: a whisper of paper grain on white */
+.tex-dark,
+.tex-red,
+.tex-light {
+  position: relative;
+  isolation: isolate;
+}
+.tex-dark::before,
+.tex-red::before,
+.tex-light::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.tex-dark::before {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='48'%3E%3Cpath d='M14 0v8l14 8v16l-14 8v8M14 8L0 16v16l14 8' fill='none' stroke='white' stroke-opacity='.07' stroke-width='1'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 -.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.38;
+}
+.tex-red::before {
+  background-image:
+    repeating-linear-gradient(108deg, transparent 0 46px, rgb(255 255 255 / 0.1) 46px 48px, transparent 48px 120px),
+    repeating-linear-gradient(108deg, transparent 0 83px, rgb(0 0 0 / 0.14) 83px 87px, transparent 87px 190px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 -.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}
+.tex-light::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .09 0 0 0 0 .04 0 0 0 0 .04 0 0 0 .7 -.28'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .cut-btn,
+  .lift {
+    transition: none;
+  }
+  .cut-btn:hover,
+  .lift:hover {
+    transform: none;
+  }
 }

@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-03T00:00:00.000Z",
+  "title": "Design System: UTM Esports",
+  "extensions": {
+    "colorMeta": {
+      "flame-red": { "role": "primary", "displayName": "Flame Red", "canonical": "#e4181e", "tonalRamp": ["#3b0507", "#6b0f12", "#9a1218", "#c4151b", "#e4181e", "#ee5a5e", "#f69a9c", "#fbd5d6"] },
+      "track-red": { "role": "primary", "displayName": "Track Red", "canonical": "#d4232b", "tonalRamp": ["#380709", "#650d12", "#93131a", "#b81d25", "#d4232b", "#e2666b", "#efa2a5", "#f9d8d9"] },
+      "cut-red": { "role": "primary", "displayName": "Cut Red", "canonical": "#b3151b", "tonalRamp": ["#300507", "#58090d", "#830e13", "#a01218", "#b3151b", "#d05a5f", "#e69b9e", "#f6d6d7"] },
+      "crimson": { "role": "primary", "displayName": "Crimson", "canonical": "#6b0f12", "tonalRamp": ["#210405", "#3d070a", "#560c0f", "#6b0f12", "#8d3235", "#b0696b", "#d3a2a3", "#efd9d9"] },
+      "warm-ink": { "role": "neutral", "displayName": "Warm Ink", "canonical": "#16090a", "tonalRamp": ["#0b0405", "#16090a", "#2e1c1d", "#4a3637", "#6b5758", "#948384", "#c2b5b6", "#ebe3e3"] },
+      "slash-white": { "role": "neutral", "displayName": "Slash White", "canonical": "#ffffff", "tonalRamp": ["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"] },
+      "scrollbar-blush": { "role": "neutral", "displayName": "Scrollbar Blush", "canonical": "#f3ebe8", "tonalRamp": ["#5f5250", "#7d6e6b", "#a09290", "#c4b8b5", "#ddd2cf", "#f3ebe8", "#f8f3f1", "#fcfaf9"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline only. Kanit 800 italic uppercase." },
+      "headline": { "displayName": "Headline", "purpose": "Every section h2. Kanit 800 italic uppercase." },
+      "title": { "displayName": "Title", "purpose": "h3 in light slabs, Track Red. Kanit 800 italic uppercase." },
+      "body": { "displayName": "Body", "purpose": "Barlow paragraphs, 34 to 48ch." },
+      "label": { "displayName": "Label", "purpose": "Buttons and nav links, Barlow bold uppercase." }
+    },
+    "shadows": [
+      { "name": "hero-text-shadow", "value": "0 2px 28px rgb(22 9 10 / 0.45)", "purpose": "Keeps the hero headline readable where it crosses the photo. The only shadow in the system." }
+    ],
+    "motion": [
+      { "name": "open", "value": "1.2s cubic-bezier(0.16, 1, 0.3, 1) both; clip-path inset(0 100% 0 0) to inset(0)", "purpose": "The hero windows open once, left to right. Disabled under prefers-reduced-motion." },
+      { "name": "slide-fade", "value": "opacity 700ms", "purpose": "Hero carousel slide change." },
+      { "name": "state-color", "value": "transition-colors (default 150ms)", "purpose": "Button hover fill change." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ],
+    "angles": [
+      { "name": "cut", "value": "18deg", "purpose": "Jaw angle for windows, buttons, plates, frames, countdown cells, roster chips." },
+      { "name": "rise", "value": "clamp(28px, 5vw, 72px)", "purpose": "Section top-edge cut; about 3 to 4 degrees across the viewport, a shallow echo of 18deg." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "White parallelogram with Track Red label; the single call to action on red or ink ground.",
+      "html": "<a class=\"ds-btn\" href=\"#\">Join the squad</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; min-height: 56px; padding: 0 56px; background: #ffffff; color: #d4232b; font-family: Barlow, system-ui, sans-serif; font-weight: 700; font-size: 1.125rem; letter-spacing: 0.025em; text-transform: uppercase; text-decoration: none; clip-path: polygon(18px 0, 100% 0, calc(100% - 18px) 100%, 0 100%); transition: background-color .15s, color .15s; } .ds-btn:hover { background: #16090a; color: #ffffff; } .ds-btn:focus-visible { outline: 3px solid #ffffff; outline-offset: 4px; }"
+    },
+    {
+      "name": "Sticky Discord Button",
+      "kind": "button",
+      "refersTo": "button-sticky",
+      "description": "Warm Ink parallelogram pinned to the bottom of phone screens.",
+      "html": "<a class=\"ds-sticky\" href=\"#\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"currentColor\"><circle cx=\"12\" cy=\"12\" r=\"9\"/></svg>Join our Discord</a>",
+      "css": ".ds-sticky { display: inline-flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 48px; background: #16090a; color: #ffffff; font-family: Barlow, system-ui, sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.025em; text-transform: uppercase; text-decoration: none; clip-path: polygon(18px 0, 100% 0, calc(100% - 18px) 100%, 0 100%); } .ds-sticky:focus-visible { outline: 3px solid #d4232b; outline-offset: 4px; }"
+    },
+    {
+      "name": "Countdown Cell",
+      "kind": "custom",
+      "refersTo": "countdown-cell",
+      "description": "Skewed Track Red cell with upright numerals; four in a row for the next-event timer.",
+      "html": "<div class=\"ds-cell\"><div class=\"ds-cell-in\"><p class=\"ds-num\">07</p><p class=\"ds-unit\">Days</p></div></div>",
+      "css": ".ds-cell { display: inline-block; width: 140px; padding: 32px 4px; background: #d4232b; color: #ffffff; text-align: center; transform: skewX(-18deg); } .ds-cell-in { transform: skewX(18deg); } .ds-num { margin: 0; font-family: Kanit, 'Arial Narrow', sans-serif; font-weight: 800; font-style: italic; font-size: 4.5rem; line-height: 1; font-variant-numeric: tabular-nums; } .ds-unit { margin: 8px 0 0; font-family: Barlow, system-ui, sans-serif; font-size: 1rem; }"
+    },
+    {
+      "name": "Roster Name",
+      "kind": "chip",
+      "refersTo": "roster-name",
+      "description": "Skewed Warm Ink chip carrying a player's in-game name in display type.",
+      "html": "<span class=\"ds-name\"><span class=\"ds-name-in\">Valkyrie</span></span>",
+      "css": ".ds-name { display: inline-block; background: #16090a; color: #ffffff; transform: skewX(-18deg); } .ds-name-in { display: block; padding: 12px 32px; font-family: Kanit, 'Arial Narrow', sans-serif; font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 2.5rem; line-height: 1.05; letter-spacing: -0.02em; transform: skewX(18deg); }"
+    },
+    {
+      "name": "Result Plate",
+      "kind": "custom",
+      "refersTo": "countdown-cell",
+      "description": "Track Red skewed placement plate beside event name and date.",
+      "html": "<div class=\"ds-result\"><span class=\"ds-place\"><span class=\"ds-place-in\">1st</span></span><span class=\"ds-event\">Campus Cup</span></div>",
+      "css": ".ds-result { display: flex; align-items: center; gap: 24px; font-family: Barlow, system-ui, sans-serif; font-size: 1.125rem; color: #16090a; } .ds-place { background: #d4232b; color: #ffffff; padding: 12px 24px; transform: skewX(-18deg); } .ds-place-in { display: block; transform: skewX(18deg); font-family: Kanit, 'Arial Narrow', sans-serif; font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 3rem; line-height: 1; white-space: nowrap; }"
+    },
+    {
+      "name": "Caption Plate",
+      "kind": "card",
+      "refersTo": "caption-plate",
+      "description": "Warm Ink cut plate under the hero photo with title, caption and carousel controls.",
+      "html": "<div class=\"ds-plate\"><p class=\"ds-plate-title\">Season opener</p><p class=\"ds-plate-cap\">The squad after the final.</p><div class=\"ds-ctl\"><button class=\"ds-ctl-btn\" aria-label=\"Previous\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"/></svg></button></div></div>",
+      "css": ".ds-plate { width: 34rem; max-width: 100%; box-sizing: border-box; padding: 24px 64px; background: #16090a; color: #ffffff; clip-path: polygon(50px 0, 100% 0, calc(100% - 50px) 100%, 0 100%); } .ds-plate-title { margin: 0; font-family: Kanit, 'Arial Narrow', sans-serif; font-weight: 700; font-style: italic; text-transform: uppercase; font-size: 1.25rem; line-height: 1.2; } .ds-plate-cap { margin: 4px 0 12px; font-family: Barlow, system-ui, sans-serif; font-size: 1rem; } .ds-ctl-btn { display: grid; place-items: center; width: 44px; height: 44px; background: none; color: #ffffff; border: 2px solid rgba(255,255,255,.4); cursor: pointer; transition: border-color .15s; } .ds-ctl-btn:hover { border-color: #ffffff; } .ds-ctl-btn:focus-visible { outline: 3px solid #ffffff; outline-offset: 4px; }"
+    },
+    {
+      "name": "Slanted Photo Frame",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "16:9 photo cut at the jaw angle, with title and caption below.",
+      "html": "<figure class=\"ds-photo\"><div class=\"ds-photo-img\"></div><p class=\"ds-photo-title\">Moment</p></figure>",
+      "css": ".ds-photo { margin: 0; width: 320px; color: #ffffff; } .ds-photo-img { aspect-ratio: 16 / 9; background: #6b0f12; clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%); } .ds-photo-title { margin: 16px 0 0; font-family: Kanit, 'Arial Narrow', sans-serif; font-weight: 700; font-style: italic; text-transform: uppercase; font-size: 1.5rem; line-height: 1; }"
+    },
+    {
+      "name": "Red Field Slab",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Section on the logo gradient with a shallow diagonal top cut and a Headline.",
+      "html": "<section class=\"ds-field\"><h2 class=\"ds-h2\">Moments</h2></section>",
+      "css": ".ds-field { --rise: 56px; padding: calc(var(--rise) + 4rem) 24px calc(var(--rise) + 3rem); background: linear-gradient(135deg, #6b0f12 0%, #b3151b 45%, #e4181e 100%); color: #ffffff; clip-path: polygon(0 var(--rise), 100% 0, 100% 100%, 0 100%); } .ds-h2 { margin: 0; font-family: Kanit, 'Arial Narrow', sans-serif; font-weight: 800; font-style: italic; text-transform: uppercase; font-size: clamp(3rem, 8vw, 6rem); line-height: .95; letter-spacing: -0.02em; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Cut Through",
+    "overview": "The system is the UTM logo's own construction, scaled up to a page. A red field takes the logo's gradient. White knife slashes cut through it at 18 degrees, the angle of the dragon's jaw. Type is heavy, uppercase, italic and tightly set, leaning with the same shear. Everything that is a box is a parallelogram, and the hero photo is only visible through slashes cut at that angle.\n\nThe page alternates the red field, warm-ink slabs and white slabs. Horizontal section cuts are a shallow echo (about 3 to 4 degrees) of the 18 degree angle used on windows, buttons, plates and countdown cells. A dark-red ghost dragon sits behind each section and faint code-drawn textures keep flat color alive. One authored motion moment: the hero cuts open once.",
+    "keyCharacteristics": [
+      "Red field with white slashes; red is carried by large areas, not sprinkled.",
+      "One shear angle, 18 degrees (--cut), applied to every box and cut edge.",
+      "Sheared heavy italic display type, uppercase, negative tracking.",
+      "Zero border radius anywhere; silhouettes are parallelograms and diagonals.",
+      "Flat: no box shadows; depth comes from overlap, ghost layer and texture.",
+      "Textures are faint and always behind content."
+    ],
+    "rules": [
+      { "name": "The One Gradient Rule", "body": "The red field is a 135 degree gradient, Crimson 0%, Cut Red 45%, Flame Red 100%. It appears only as .field, and only on the hero, Moments and Join. Never use it on a card or a button.", "section": "colors" },
+      { "name": "The Warm Ink Rule", "body": "Dark ground is #16090a, never #000. White-on-red text uses Track Red or darker; text sits on Flame Red only at large sizes.", "section": "colors" },
+      { "name": "The Inverted Button Rule", "body": "Buttons are white with Track Red text on red or ink ground, and flip to ink or red on hover. A red button on a red field is never used.", "section": "colors" },
+      { "name": "The Lean Rule", "body": "Display type is never upright and never lowercase. The only upright text is Barlow body copy.", "section": "typography" },
+      { "name": "The Unskew Rule", "body": "When a box is skewed (.skew), its content is wrapped in .unskew so the type is italic by choice, not distorted by the box.", "section": "typography" },
+      { "name": "The Behind-Only Rule", "body": "Ghost and texture layers are ::before/::after at z-index -1 inside an isolated stacking context. They never sit over content and never receive pointer events.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do shear every box at 18 degrees (--cut, .cut-btn, .cut-plate, .slant, .skew) and keep section cuts shallow at about 3 to 4 degrees.",
+      "Do set display type in Kanit 800 or 700 italic uppercase with -0.02em tracking.",
+      "Do keep ground to three states: red field, Warm Ink (#16090a), white.",
+      "Do use .unskew on content inside any .skew box.",
+      "Do keep ghost and texture layers behind content, faint and non-interactive.",
+      "Do honor prefers-reduced-motion: the windows reveal and smooth scroll turn off, and the carousel does not autoplay."
+    ],
+    "donts": [
+      "Don't round corners; there is no radius in this system.",
+      "Don't add box shadows or glows for depth.",
+      "Don't use pure black or gray neutrals; the darks are reddish ink.",
+      "Don't steepen section cuts to 18 degrees or flatten buttons and plates to horizontal.",
+      "Don't put the red field gradient on small components such as cards, chips or buttons.",
+      "Don't use upright or lowercase display type."
+    ]
+  }
+}
