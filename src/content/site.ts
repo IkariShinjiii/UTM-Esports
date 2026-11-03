@@ -13,7 +13,7 @@ export const content: SiteContent = {
     recruitingOpen: true,
     social: {
       facebook: "https://www.facebook.com/UTM.ILO.Esports",
-      instagram: "https://instagram.com/REPLACE_ME",
+      instagram: "https://www.instagram.com/utm_esports/",
       tiktok: "https://www.tiktok.com/@utm.ilo.esports",
       discord: "https://discord.gg/sXs4hHxnt",
     },
