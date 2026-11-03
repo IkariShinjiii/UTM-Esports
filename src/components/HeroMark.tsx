@@ -27,7 +27,7 @@ export function HeroMark() {
         className="hero-slide pointer-events-none absolute bottom-0 right-0 w-[190%] max-w-none translate-x-[47%] translate-y-[8%] md:bottom-auto md:right-[-4%] md:top-1/2 md:h-[106%] md:w-auto md:translate-x-0 md:-translate-y-1/2"
       />
 
-      <div className={`${wrap} relative z-10 flex flex-1 flex-col justify-center py-12 md:py-20`}>
+      <div className="relative z-10 flex flex-1 flex-col justify-center px-6 py-12 md:pl-24 md:pr-12 md:py-20">
         <h1
           id="hero-title"
           className="hero-rise font-display text-[clamp(3.25rem,9vw,6rem)] font-extrabold italic uppercase leading-[0.95] tracking-[-0.02em]"
