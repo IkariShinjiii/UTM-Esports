@@ -8,13 +8,16 @@ const INTERVAL_MS = 3000;
 // The picture shuffle. Pictures slide sideways like a swipe: they advance every 3 seconds, and a
 // finger or mouse can drag them. Pictures are shown whole (the jersey graphics are never cropped), and a
 // caption is written on the picture itself where the picture has none of its own. Only the first
-// picture loads with the page. It pauses while hovered, focused or held, and never advances on its own
-// for visitors who prefer reduced motion.
+// picture loads with the page; the next one starts loading once the page has finished loading, and the
+// rest load one step ahead as the shuffle advances. It pauses while hovered, focused or held, has a
+// visible pause/play button (WCAG 2.2.2), and never advances on its own for visitors who prefer reduced
+// motion.
 export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
   const count = slides.length;
   const [pos, setPos] = useState(0); // counts up forever; pos % count is the picture shown
-  const [loaded, setLoaded] = useState(1); // how many pictures have started loading
-  const [paused, setPaused] = useState(false);
+  const [loaded, setLoaded] = useState(1); // how many pictures have been asked to load, in order
+  const [paused, setPaused] = useState(false); // hover, focus or finger: temporary
+  const [stopped, setStopped] = useState(false); // the visitor's pause button, or reduced motion
   const [reduced, setReduced] = useState(false);
   const [drag, setDrag] = useState(0); // px the picture is being dragged
   const frame = useRef<HTMLDivElement>(null);
@@ -22,16 +25,25 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
   const prevOffsets = useRef<number[]>([]);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setReduced(true);
-    const id = window.setTimeout(() => setLoaded(count), 1200);
-    return () => window.clearTimeout(id);
-  }, [count]);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setReduced(true);
+      setStopped(true);
+    }
+    // Keep the second picture out of the page's first load
+    const warm = () => setLoaded((l) => Math.max(l, 2));
+    if (document.readyState === "complete") warm();
+    else window.addEventListener("load", warm, { once: true });
+    return () => window.removeEventListener("load", warm);
+  }, []);
 
   useEffect(() => {
-    if (paused || count < 2) return;
+    if (paused || stopped || count < 2) return;
     const id = window.setInterval(() => setPos((p) => p + 1), INTERVAL_MS);
     return () => window.clearInterval(id);
-  }, [paused, count]);
+  }, [paused, stopped, count]);
+
+  // Pictures below this index may load: just the first until the page has loaded, then always one ahead
+  const ready = Math.min(count, Math.max(loaded, pos > 0 ? pos + 2 : 1));
 
   // Each picture sits one frame-width apart; the one that wraps around jumps without sliding across
   const offsets = slides.map((_, i) => {
@@ -84,6 +96,7 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
         onPointerMove={onMove}
         onPointerUp={onUp}
         onPointerCancel={onUp}
+        aria-live={stopped ? "polite" : "off"}
         className="relative aspect-video touch-pan-y select-none overflow-hidden bg-ink"
       >
         {slides.map((s, i) => (
@@ -99,10 +112,9 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
             }}
             className="absolute inset-0"
           >
-            {(i < loaded || i === current) && (
+            {(i < ready || i === current) && (
               <picture>
                 {s.mobileImage && <source media="(max-width: 767px)" srcSet={s.mobileImage} />}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={s.image}
                   alt={s.alt}
@@ -134,24 +146,37 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
       </div>
 
       {count > 1 && (
-        <ul className="mt-2 flex items-center">
-          {slides.map((s, i) => (
-            <li key={s.image}>
-              <button
-                type="button"
-                onClick={() => {
-                  setLoaded(count);
-                  setPos((p) => p + (((i - current) % count) + count) % count);
-                }}
-                aria-label={`Show picture ${i + 1}: ${s.title}`}
-                aria-current={i === current}
-                className="grid h-11 w-9 place-items-center"
-              >
-                <span className={`block h-1.5 transition-all ${i === current ? "w-7 bg-white" : "w-4 bg-white/50"}`} />
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-2 flex items-center justify-between">
+          <ul className="flex items-center">
+            {slides.map((s, i) => (
+              <li key={s.image}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLoaded(count);
+                    setPos((p) => p + (((i - current) % count) + count) % count);
+                  }}
+                  aria-label={`Show picture ${i + 1}: ${s.title}`}
+                  aria-current={i === current}
+                  className="grid h-11 w-9 place-items-center"
+                >
+                  <span className={`block h-1.5 transition-all ${i === current ? "w-7 bg-white" : "w-4 bg-white/50"}`} />
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button
+            type="button"
+            onClick={() => setStopped((s) => !s)}
+            aria-label={stopped ? "Play the picture shuffle" : "Pause the picture shuffle"}
+            data-track="hero_shuffle_toggle"
+            className="grid h-11 w-11 place-items-center border-2 border-white/40 transition-colors hover:bg-white/15"
+          >
+            <svg aria-hidden viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              {stopped ? <path d="M8 5v14l11-7z" /> : <path d="M6 5h4v14H6zM14 5h4v14h-4z" />}
+            </svg>
+          </button>
+        </div>
       )}
     </div>
   );
