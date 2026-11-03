@@ -199,6 +199,29 @@ body {
   opacity: 0.45;
 }
 
+/* The hero page: one entrance, exponential ease-out. Content stays visible when motion is reduced. */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+@keyframes hero-slide {
+  from {
+    opacity: 0;
+    transform: translateX(8%);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-rise {
+    animation: hero-rise 800ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .hero-slide {
+    animation: hero-slide 1100ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
