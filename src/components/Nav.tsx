@@ -18,6 +18,7 @@ const MORE = [
   ["Community", "/#community"],
   ["Partners", "/#partners"],
   ["FAQ", "/#faq"],
+  ["Merch", "/merch"],
   ["Our CEO", "/ceo"],
   ["Organization", "/organization"],
   ["About", "/about"],

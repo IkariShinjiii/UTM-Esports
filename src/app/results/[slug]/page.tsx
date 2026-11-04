@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BackButton } from "@/components/BackButton";
 import { Nav } from "@/components/Nav";
+import { SkelImg } from "@/components/SkelImg";
 import { Footer, wrap } from "@/components/Sections";
 import { StickyDiscord } from "@/components/StickyDiscord";
 import { content } from "@/content/site";
@@ -54,8 +55,7 @@ export default async function ResultPage({ params }: { params: Promise<{ slug: s
             <p className="mt-4 text-lg text-white/80">{[a.team, a.note].filter(Boolean).join(". ")}</p>
           )}
 
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <SkelImg
             src={a.image}
             alt={a.imageAlt ?? a.event}
             width={1000}

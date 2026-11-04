@@ -57,7 +57,10 @@ export function TeamGrid({ tiles }: { tiles: TeamTile[] }) {
                 className="absolute inset-0 bg-track"
               />
               {g.art && (
-                <span aria-hidden className="absolute inset-y-0 -right-8 w-[calc(62%+2rem)] md:w-[calc(55%+2rem)]">
+                <span
+                  aria-hidden
+                  className={`absolute inset-y-0 -right-8 w-[calc(62%+2rem)] ${wide ? "md:w-[calc(78%+2rem)]" : "md:w-[calc(55%+2rem)]"}`}
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={g.art}
@@ -67,8 +70,8 @@ export function TeamGrid({ tiles }: { tiles: TeamTile[] }) {
                     height={506}
                     style={{
                       objectPosition: g.pos,
-                      maskImage: "linear-gradient(to right, transparent 0%, #000 65%)",
-                      WebkitMaskImage: "linear-gradient(to right, transparent 0%, #000 65%)",
+                      maskImage: `linear-gradient(to right, transparent 0%, #000 ${wide ? 45 : 65}%)`,
+                      WebkitMaskImage: `linear-gradient(to right, transparent 0%, #000 ${wide ? 45 : 65}%)`,
                     }}
                     className="h-full w-full object-cover"
                   />
