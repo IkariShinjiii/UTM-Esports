@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Kanit } from "next/font/google";
+import { Analytics } from "@/components/Analytics";
 import { content } from "@/content/site";
 import "./globals.css";
 
@@ -48,6 +49,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${sans.variable} ${display.variable} antialiased`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
