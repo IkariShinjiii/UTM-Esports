@@ -40,15 +40,15 @@ export function HeroMark() {
       >
         <div className="dragon-float relative h-full w-full">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/dragon-head.webp" alt="" fetchPriority="high" className="absolute left-0 top-0 h-full" style={{ width: "70.417%" }} />
+          <img src="/images/dragon-head.webp" alt="" fetchPriority="high" draggable={false} className="absolute left-0 top-0 h-full" style={{ width: "70.417%" }} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/dragon-eye.webp" alt="" className="dragon-eye absolute" style={{ left: "29.709%", top: "53.1%", width: "6.953%", height: "9.698%" }} />
           <div className="dragon-mane absolute" style={{ left: "41.719%", top: "27.822%", width: "34.134%", height: "54.848%" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/dragon-mane.webp" alt="" className="block h-full w-full" />
+            <img src="/images/dragon-mane.webp" alt="" fetchPriority="high" draggable={false} className="block h-full w-full" />
             <div className="dragon-tips absolute" style={{ left: "72.963%", top: "-32.174%", width: "97.778%", height: "132.174%" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/dragon-tips.webp" alt="" className="block h-full w-full" />
+              <img src="/images/dragon-tips.webp" alt="" fetchPriority="high" draggable={false} className="block h-full w-full" />
             </div>
           </div>
         </div>
