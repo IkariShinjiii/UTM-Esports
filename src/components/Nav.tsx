@@ -39,6 +39,28 @@ export function Nav() {
   const moreWrap = useRef<HTMLDivElement>(null);
   const morePanel = useRef<HTMLUListElement>(null);
   const moreBtn = useRef<HTMLButtonElement>(null);
+  const closeTimer = useRef<number | null>(null);
+  const lastPointer = useRef("mouse"); // what the last press on More was made with: mouse, touch or pen
+
+  // Hovering More with a mouse opens it; leaving closes it after a beat, so crossing the small gap between the
+  // button and the list does not close it. Touch and keyboard still use the button (a click toggles).
+  const cancelClose = () => {
+    if (closeTimer.current !== null) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+  const hoverOpen = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    cancelClose();
+    setMore(true);
+  };
+  const hoverClose = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    cancelClose();
+    closeTimer.current = window.setTimeout(() => setMore(false), 160);
+  };
+  useEffect(() => cancelClose, []);
 
   // Scroll-spy: the current section is the last one whose top has passed just under the nav bar.
   useEffect(() => {
@@ -75,7 +97,8 @@ export function Nav() {
   useEffect(() => {
     if (!more) return;
     const panel = morePanel.current;
-    if (panel) {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches; // no drop for reduced motion
+    if (panel && !still) {
       gsap.fromTo(panel, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" });
       gsap.fromTo(panel.children, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.3, stagger: 0.045, ease: "power2.out", delay: 0.05 });
     }
@@ -128,6 +151,8 @@ export function Nav() {
           <div
             ref={moreWrap}
             className="relative"
+            onPointerEnter={hoverOpen}
+            onPointerLeave={hoverClose}
             onBlur={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget as Node)) setMore(false);
             }}
@@ -135,7 +160,14 @@ export function Nav() {
             <button
               ref={moreBtn}
               type="button"
-              onClick={() => setMore((v) => !v)}
+              onPointerDown={(e) => {
+                lastPointer.current = e.pointerType;
+              }}
+              onClick={(e) => {
+                // A mouse click on a menu that hover already opened keeps it open; keyboard and touch toggle it
+                if (e.detail > 0 && lastPointer.current === "mouse") setMore(true);
+                else setMore((v) => !v);
+              }}
               aria-expanded={more}
               aria-controls="more-menu"
               className={`inline-flex items-center gap-2 ${linkCls(moreActive || more)} ${more ? "!text-white" : ""}`}
@@ -155,26 +187,29 @@ export function Nav() {
               </svg>
             </button>
             {more && (
-              <ul
-                id="more-menu"
-                ref={morePanel}
-                className="absolute right-0 top-full z-50 mt-3 w-56 border-t-4 border-track bg-white py-2 text-ink shadow-[0_18px_40px_rgb(0_0_0/0.35)]"
-              >
-                {MORE.map(([label, href]) => (
-                  <li key={href}>
-                    <a
-                      href={href}
-                      onClick={() => setMore(false)}
-                      aria-current={isActive(href) ? "location" : undefined}
-                      className={`block px-6 py-3 text-lg font-semibold leading-none transition-colors hover:bg-blush hover:text-track ${
-                        isActive(href) ? "text-track" : ""
-                      }`}
-                    >
-                      {label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              // The padding on top is part of the hover area, so the pointer can travel from the button to the list
+              <div className="absolute right-0 top-full z-50 pt-3">
+                <ul
+                  id="more-menu"
+                  ref={morePanel}
+                  className="w-56 border-t-4 border-track bg-white py-2 text-ink shadow-[0_18px_40px_rgb(0_0_0/0.35)]"
+                >
+                  {MORE.map(([label, href]) => (
+                    <li key={href}>
+                      <a
+                        href={href}
+                        onClick={() => setMore(false)}
+                        aria-current={isActive(href) ? "location" : undefined}
+                        className={`block px-6 py-3 text-lg font-semibold leading-none transition-colors hover:bg-blush hover:text-track ${
+                          isActive(href) ? "text-track" : ""
+                        }`}
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
         </nav>
