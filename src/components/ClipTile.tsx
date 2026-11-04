@@ -15,7 +15,7 @@ export function ClipTile({ m }: { m: Moment }) {
         title={m.title}
         allow="autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
-        className="slant aspect-video w-full"
+        className="aspect-video w-full"
       />
     );
   }
@@ -28,7 +28,7 @@ export function ClipTile({ m }: { m: Moment }) {
       loading="lazy"
       width={1920}
       height={1080}
-      className="slant aspect-video w-full object-cover"
+      className="aspect-video w-full object-cover"
     />
   );
   if (!m.videoUrl) return img;

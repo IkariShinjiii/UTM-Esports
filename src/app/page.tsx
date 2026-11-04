@@ -16,19 +16,19 @@ import {
 import { StickyDiscord } from "@/components/StickyDiscord";
 import { content } from "@/content/site";
 
-// Section order: hero page (the dragon), picture shuffle, results, join, teams, next event, highlights,
+// Section order: hero page (the dragon), results, join, teams, next event, picture shuffle, highlights,
 // community, partners, FAQ and about, footer.
 export default function Home() {
   return (
     <>
       <Nav />
       <HeroMark />
-      <Hero />
       <main>
         <Results />
         <Join />
         <Teams />
         <NextEvent events={content.events} games={content.games} wrap={wrap} />
+        <Hero />
         <Highlights />
         <Community />
         <Partner />

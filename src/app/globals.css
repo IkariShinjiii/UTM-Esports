@@ -7,6 +7,9 @@
   --color-flame: #e4181e; /* the bright end of the logo's red gradient */
   --color-crimson: #6b0f12; /* the deep end of the gradient */
   --color-ink: #16090a;
+  --color-card: #241214; /* a card or plate sitting on an ink slab */
+  --color-well: #12080a; /* the dark well a poster or photo sits in */
+  --color-blush: #f3ebe8; /* pale warm grey: scrollbar track, menu hover */
   --font-sans: var(--font-sans-family), system-ui, sans-serif;
   --font-display: var(--font-display-family), "Arial Narrow", sans-serif;
 }
@@ -22,7 +25,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
   scroll-padding-bottom: 5rem;
-  scrollbar-color: var(--color-track) #f3ebe8;
+  scrollbar-color: var(--color-track) var(--color-blush);
 }
 
 body {
@@ -102,17 +105,6 @@ body {
 .cut-card {
   clip-path: none;
 }
-/* Photo frames cut at the same angle on a 16:9 box */
-.slant {
-  clip-path: none;
-}
-/* A box skewed at the logo angle, with its content standing upright */
-.skew {
-  transform: none;
-}
-.unskew {
-  transform: none;
-}
 
 .results-track {
   scrollbar-color: var(--color-track) transparent;
@@ -131,15 +123,15 @@ body {
    red on black, ink on white. It lives behind the content, never over it. A section that sets its own
    --ghost-img photo shows that instead. */
 .field {
-  --dragon-img: url("/images/dragon-white.webp");
+  --dragon-img: url("/images/dragon-ghost-white.webp");
   --dragon-op: 0.16;
 }
 .tex-dark {
-  --dragon-img: url("/images/dragon-red.webp");
+  --dragon-img: url("/images/dragon-ghost-red.webp");
   --dragon-op: 0.2;
 }
 .tex-light {
-  --dragon-img: url("/images/dragon-ink.webp");
+  --dragon-img: url("/images/dragon-ghost-ink.webp");
   --dragon-op: 0.09;
 }
 .ghost::after {
@@ -234,4 +226,51 @@ body {
   .lift:hover {
     transform: none;
   }
+}
+
+/* Footer: a finish-line strip on top, and the dragon coiled under the links, cropped by the bottom edge. */
+.finish-line {
+  height: 24px;
+  background:
+    repeating-conic-gradient(#fff 0 25%, #16090a 0 50%) 0 0 / 48px 48px;
+}
+.foot-dragon {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.foot-dragon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("/images/dragon-ghost-red.webp") no-repeat right -4% bottom -30% / min(70vw, 640px) auto;
+  opacity: 0.22;
+}
+
+
+/* Slow reveal on scroll (see useReveal). The hidden state is added by script, only to things below the fold. */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0);
+  transition:
+    opacity 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+    transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transform: none;
+    transition: opacity 0.9s ease var(--reveal-delay, 0ms);
+  }
+}
+
+
+/* Body copy: avoid a single word on the last line */
+p {
+  text-wrap: pretty;
 }

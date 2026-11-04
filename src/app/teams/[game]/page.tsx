@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BackButton } from "@/components/BackButton";
 import { Nav } from "@/components/Nav";
 import { Footer, btnRed, btnWhite, wrap } from "@/components/Sections";
+import { Reveal } from "@/components/Reveal";
 import { StickyDiscord } from "@/components/StickyDiscord";
 import { content } from "@/content/site";
 
@@ -82,7 +83,7 @@ export default async function GamePage({ params }: { params: Promise<{ game: str
 
       <main>
         <section aria-labelledby="players-title" className="on-dark tex-dark slab relative bg-ink text-white">
-          <div className={wrap}>
+          <Reveal className={wrap}>
             {gameTeams.length > 0 ? (
               <div className="space-y-16">
                 {gameTeams.map((team, i) => (
@@ -95,8 +96,8 @@ export default async function GamePage({ params }: { params: Promise<{ game: str
                     </h2>
                     <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
                       {team.players.map((pl) => (
-                        <li key={pl.ign} className="bg-[#241214] p-3 pb-5 text-white md:p-4 md:pb-6">
-                          <div className="relative aspect-square overflow-hidden bg-[#12080a]">
+                        <li key={pl.ign} className="bg-card p-3 pb-5 text-white md:p-4 md:pb-6">
+                          <div className="relative aspect-square overflow-hidden bg-well">
                             {pl.photo ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img src={pl.photo} alt={pl.ign} loading="lazy" className="h-full w-full object-cover" />
@@ -155,7 +156,7 @@ export default async function GamePage({ params }: { params: Promise<{ game: str
                 ))}
               </ul>
             </div>
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />
