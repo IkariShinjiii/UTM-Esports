@@ -44,13 +44,18 @@ export interface Sponsor {
   logoOnDark?: string; // a version of the logo for dark backgrounds (dark parts made light)
   tier?: string;
   url?: string;
+  blurb?: string; // one true sentence about what they do for the club. Left out until the partner agrees to it.
 }
 
 export interface MerchItem {
   name: string;
-  price: number; // PHP
-  photo?: string;
-  orderUrl: string; // Messenger or Google Form
+  photo: string; // front view with the background removed (transparent WebP)
+  photoAlt: string;
+  backPhoto?: string; // back view, shown on hover
+  width: number;
+  height: number;
+  price?: number; // PHP. Left out until the org sets one: the page then says the price is coming soon.
+  orderUrl?: string; // Messenger or Google Form. Left out until there is one: the page then points to Discord.
 }
 
 export interface SiteSettings {
@@ -125,6 +130,7 @@ export interface About {
 export interface Faq {
   question: string;
   answer: string;
+  link?: { label: string; href: string }; // an optional link shown under the answer
 }
 
 export interface SiteContent {

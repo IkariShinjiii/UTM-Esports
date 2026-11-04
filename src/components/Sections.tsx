@@ -3,6 +3,7 @@ import { content } from "@/content/site";
 import { bgPhoto } from "./bgPhoto";
 import { resultSlug } from "@/content/slug";
 import { ClipTile } from "./ClipTile";
+import { FaqList } from "./FaqList";
 import { TeamGrid, type TeamTile } from "./TeamGrid";
 import { Reveal } from "./Reveal";
 import { SocialIcon } from "./SocialIcon";
@@ -287,7 +288,7 @@ export function Mosaic({ items }: { items: Moment[] }) {
 // 6. Highlights: photos now, clips later. A clip loads only when a visitor taps play.
 // The home page shows the first photos; the rest are on their own page (/highlights).
 export function Highlights() {
-  const { settings, moments, moreMoments } = content;
+  const { moments, moreMoments } = content;
   return (
     <section
       id="highlights"
@@ -303,15 +304,12 @@ export function Highlights() {
       <Reveal delay={150} className={`${wrap} mt-10`}>
         <Mosaic items={moments} />
       </Reveal>
-      <Reveal className={`${wrap} mt-10 flex flex-wrap items-center gap-x-8 gap-y-4`}>
+      <Reveal className={`${wrap} mt-10`}>
         {moreMoments.length > 0 && (
           <Link href="/highlights" data-track="highlights_all" className={btnWhite}>
             See all highlights
           </Link>
         )}
-        <a href={settings.discordInvite} data-track="discord_highlights" className={linkOnDark}>
-          Join our Discord
-        </a>
       </Reveal>
     </section>
   );
@@ -373,95 +371,92 @@ export function Partner() {
       style={bgPhoto("partners")}
       className="on-dark tex-dark slab ghost relative scroll-mt-4 bg-ink text-white [--gop:0.12] [--gpos:100%_50%]"
     >
-      {sponsors.length > 0 && (
-        <>
-          <Reveal className={`${wrap} text-center`}>
-            <h2 className={h2}>Our partners</h2>
-          </Reveal>
-          <Reveal className="mt-10">
-            <div className="bg-white py-8 md:py-10">
-              <ul className={`${wrap} flex flex-wrap items-center justify-center gap-x-16 gap-y-8 md:gap-x-28`}>
-                {sponsors.map((sp) => {
-                  const img = sp.logo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={sp.logo} alt={sp.url ? "" : sp.name} loading="lazy" className="h-14 w-auto md:h-[4.5rem]" />
-                  ) : (
-                    <span className="font-display text-3xl font-extrabold italic uppercase text-ink">{sp.name}</span>
-                  );
-                  return (
-                    <li key={sp.name}>
-                      {sp.url ? (
+      <div className={`${wrap} grid gap-14 lg:gap-16 ${sponsors.length > 0 ? "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : ""}`}>
+        {sponsors.length > 0 && (
+          <Reveal>
+            <h2 id="partner-title" className={h2}>
+              Our partners
+            </h2>
+            <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+              {sponsors.map((sp) => {
+                const logo = sp.logo ?? sp.logoOnDark;
+                return (
+                  <li key={sp.name} className="flex flex-col bg-card">
+                    <div className="grid min-h-40 place-items-center bg-white px-8 py-8">
+                      {logo ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={logo} alt="" loading="lazy" className="max-h-16 w-auto max-w-full md:max-h-20" />
+                      ) : (
+                        <span className="font-display text-2xl font-extrabold italic uppercase text-ink">{sp.name}</span>
+                      )}
+                    </div>
+                    <div className="flex flex-1 flex-col p-5">
+                      <h3 className="font-display text-xl font-extrabold italic uppercase leading-tight">{sp.name}</h3>
+                      {sp.blurb && <p className="mt-2 text-base leading-snug text-white/80">{sp.blurb}</p>}
+                      {sp.url && (
+                        <div className="mt-auto pt-4">
                         <a
                           href={sp.url}
                           target="_blank"
                           rel="noopener"
-                          aria-label={`${sp.name} (opens in a new tab)`}
-                          className="inline-flex min-h-12 items-center transition duration-150 hover:-translate-y-0.5"
+                          aria-label={`Visit ${sp.name} (opens in a new tab)`}
+                          data-track="partner_visit"
+                          className="inline-flex min-h-11 items-center text-base font-bold uppercase tracking-wide underline decoration-2 underline-offset-8 hover:no-underline"
                         >
-                          {img}
+                          Visit
                         </a>
-                      ) : (
-                        img
+                        </div>
                       )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           </Reveal>
-        </>
-      )}
-      <Reveal className={`${wrap}${sponsors.length > 0 ? " mt-16" : ""} text-center`}>
-        <h2 id="partner-title" className={h2}>
-          Partner with us
-        </h2>
-        <p className="mx-auto mt-4 max-w-[44ch] text-lg leading-snug">
-          Back a club that is building its team in the open. Tell us who you are and what you
-          have in mind, and an officer will reply by email.
-        </p>
-        <div className="mt-8">
-          <a href={settings.partnerFormUrl} data-track="partner_form" className={btnWhite}>
-            Send a partner enquiry
-          </a>
-        </div>
-      </Reveal>
+        )}
+        <Reveal delay={150} className={sponsors.length > 0 ? "self-start" : "mx-auto max-w-xl text-center"}>
+          <div className="border-t-4 border-track bg-card p-6 md:p-8">
+            <h2 id={sponsors.length > 0 ? undefined : "partner-title"} className={`${h2} !text-[clamp(1.75rem,3vw,2.5rem)]`}>
+              Partner with us
+            </h2>
+            <p className="mt-4 max-w-[44ch] text-lg leading-snug">
+              Back a club that is building its team in the open. Tell us who you are and what you
+              have in mind, and an officer will reply by email.
+            </p>
+            <div className="mt-8">
+              <a href={settings.partnerFormUrl} data-track="partner_form" className={`${btnWhite} max-sm:px-6`}>
+                Send a partner enquiry
+              </a>
+            </div>
+          </div>
+        </Reveal>
+      </div>
     </section>
   );
 }
 
 // 9. FAQ and about: answers to the questions applicants ask, and the story with a link to the full page.
 export function Faq() {
-  const { faq, about } = content;
+  const { faq, settings } = content;
   return (
     <section
       id="faq"
       aria-labelledby="faq-title"
       className="tex-light slab ghost relative scroll-mt-4 bg-white [--gpos:0%_30%]"
     >
-      <Reveal className={`${wrap} grid gap-14 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-20`}>
-        <div>
-          <h2 id="faq-title" className={h2}>
-            FAQ
-          </h2>
-          <div className="mt-10 border-t-[3px] border-ink">
-            {faq.map((f) => (
-              <details key={f.question} className="group border-b border-ink/25">
-                <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-4 font-display text-lg font-bold italic uppercase leading-tight marker:hidden md:text-xl [&::-webkit-details-marker]:hidden">
-                  {f.question}
-                  <span aria-hidden className="text-4xl leading-none text-track group-open:hidden">+</span>
-                  <span aria-hidden className="hidden text-4xl leading-none text-track group-open:inline">−</span>
-                </summary>
-                <p className="max-w-[60ch] pb-6 text-lg leading-snug">{f.answer}</p>
-              </details>
-            ))}
-          </div>
+      <Reveal className={wrap}>
+        <h2 id="faq-title" className={h2}>
+          FAQ
+        </h2>
+        <p className="mt-4 max-w-[48ch] text-lg leading-snug">Quick answers for new players. Open a question to read it.</p>
+        <div className="mt-10 max-w-4xl">
+          <FaqList items={faq} />
         </div>
-        <div>
-          <h3 className={h3}>Our story</h3>
-          <p className="mt-4 max-w-[48ch] text-lg leading-snug">{about.story}</p>
-          <Link href="/about" data-track="about_more" className={`${btnInk} mt-8`}>
-            Mission and vision
-          </Link>
+        <div className="mt-10 max-w-4xl">
+          <p className="text-lg font-semibold">Still have a question?</p>
+          <a href={settings.discordInvite} data-track="discord_faq" className={`${btnInk} mt-4`}>
+            Ask on Discord
+          </a>
         </div>
       </Reveal>
     </section>
@@ -476,7 +471,7 @@ export function Footer() {
   const link = "inline-flex min-h-11 items-center hover:underline hover:underline-offset-4";
   const columns: { title: string; items: [string, string][] }[] = [
     { title: "Play", items: [...Object.entries(games).map(([id, name]): [string, string] => [name, `/teams/${id}`]), ["Join us", "/#join"]] },
-    { title: "Watch", items: [["Results", "/#results"], ["Events", "/#events"], ["Highlights", "/#highlights"], ["Our CEO", "/ceo"], ["Organization", "/organization"], ["About", "/about"]] },
+    { title: "Watch", items: [["Results", "/#results"], ["Events", "/#events"], ["Highlights", "/#highlights"], ["Merch", "/merch"], ["Our CEO", "/ceo"], ["Organization", "/organization"], ["About", "/about"]] },
     {
       title: "Connect",
       items: [

@@ -205,6 +205,16 @@ export const content: SiteContent = {
   // FAQ: holding answers only. Replace with the org's confirmed eligibility, schedule and code of conduct.
   faq: [
     {
+      question: "How do I join?",
+      answer: "Fill in the tryout form with your in-game name, rank and role, then join our Discord so the officers can reach you.",
+      link: { label: "See the steps", href: "/#join" },
+    },
+    {
+      question: "Which games do you play?",
+      answer: "Mobile Legends: Bang Bang has a team now (UTM Synctron). Valorant, Honor of Kings, League of Legends and Wild Rift are coming.",
+      link: { label: "See the teams", href: "/#teams" },
+    },
+    {
       question: "Who can apply?",
       answer: "UTM Esports is open to aspiring players who want to grow. Eligibility details are being confirmed; join our Discord to hear first.",
     },
@@ -215,6 +225,11 @@ export const content: SiteContent = {
     {
       question: "What is the code of conduct?",
       answer: "We are building a positive and inclusive team. The full code of conduct is being finalized.",
+    },
+    {
+      question: "Who runs UTM Esports?",
+      answer: "Our CEO, the admins, the school representatives, the brand ambassadors and the streamer, with the MLBB division as our first team.",
+      link: { label: "See the organization chart", href: "/organization" },
     },
   ],
   // The games UTM Esports plays or is building teams for. A game with no team in `teams` shows "Coming soon".
@@ -367,8 +382,28 @@ export const content: SiteContent = {
     },
   ],
   sponsors: [
-    { name: "CDG Solutions", logo: "/images/partners/cdg-solutions.webp", logoOnDark: "/images/partners/cdg-solutions-light.webp", url: "https://cdgsolutions.dev/" },
-    { name: "Nbrims", logo: "/images/partners/nbrims.webp", logoOnDark: "/images/partners/nbrims-light.webp", url: "https://www.facebook.com/profile.php?id=61589832462197" },
+    { name: "CDG Solutions", logo: "/images/partners/cdg-solutions.webp", logoOnDark: "/images/partners/cdg-solutions-light.webp", url: "https://cdgsolutions.dev/",
+      blurb: "Cascade Development Group, a software company in Iloilo City that builds custom websites, business systems and AI tools. \"Software Built to Last.\"" },
+    { name: "Nbrims", logo: "/images/partners/nbrims.webp", logoOnDark: "/images/partners/nbrims-light.webp", url: "https://www.facebook.com/profile.php?id=61589832462197",
+      blurb: "An Iloilo City brand. \"Crowning your style.\"" },
   ],
-  merch: [],
+  // Merch: the two club jerseys, front and back views (transparent PNGs supplied by the club). No prices or order links are set yet.
+  merch: [
+    {
+      name: "Crimson Cloudburst jersey",
+      photo: "/images/merch/crimson-front.webp",
+      photoAlt: "Front of the Crimson Cloudburst jersey: black with a red dragon across the chest",
+      backPhoto: "/images/merch/crimson-back.webp",
+      width: 718,
+      height: 900,
+    },
+    {
+      name: "Sakura Blossom jersey",
+      photo: "/images/merch/sakura-front.webp",
+      photoAlt: "Front of the Sakura Blossom jersey: white with a pink dragon and cherry blossoms",
+      backPhoto: "/images/merch/sakura-back.webp",
+      width: 680,
+      height: 900,
+    },
+  ],
 };
