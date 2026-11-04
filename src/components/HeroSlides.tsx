@@ -16,6 +16,7 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
   const count = slides.length;
   const [pos, setPos] = useState(0); // counts up forever; pos % count is the picture shown
   const [loaded, setLoaded] = useState(1); // how many pictures have been asked to load, in order
+  const [near, setNear] = useState(false); // the shuffle is close to the screen: only then do the other pictures load
   const [paused, setPaused] = useState(false); // a finger or the keyboard is on it: temporary
   const [stopped, setStopped] = useState(false); // chosen with the keyboard-only Pause button
   const [drag, setDrag] = useState(0); // px the picture is being dragged
@@ -39,6 +40,26 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
     return () => window.removeEventListener("load", warm);
   }, []);
 
+  // This section sits well below the first screen, so its pictures wait until the visitor scrolls near it
+  useEffect(() => {
+    const el = frame.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setNear(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "700px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   useEffect(() => {
     if (paused || stopped || count < 2) return;
     const id = window.setInterval(() => setPos((p) => p + 1), INTERVAL_MS);
@@ -46,7 +67,7 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
   }, [paused, stopped, count]);
 
   // Pictures below this index may load: just the first until the page has loaded, then always one ahead
-  const ready = Math.min(count, Math.max(loaded, pos > 0 ? pos + 2 : 1));
+  const ready = near ? Math.min(count, Math.max(loaded, pos > 0 ? pos + 2 : 1)) : 1;
 
   // Each picture sits one frame-width apart; the one that wraps around jumps without sliding across
   const offsets = slides.map((_, i) => {
@@ -141,7 +162,7 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
                     width={1920}
                     height={1080}
                     draggable={false}
-                    fetchPriority={i === 0 ? "high" : "auto"}
+                    loading="lazy"
                     style={
                       {
                         "--pm": s.positionMobile ?? "50% 50%",

@@ -204,78 +204,112 @@ body {
     transform: translateX(8%);
   }
 }
-/* The hero dragon. Hidden by default: the eye patch (the cut-out shows). When motion is allowed:
-   - the whole mark floats up and down slowly;
-   - the mane sways from where it joins the head, and the outer flame tips sway a little more on their own beat
-     (the tips sit inside the mane, so their motion adds to it), which reads as flying into the wind;
-   - the eye blinks.
-   Only transforms are animated (smooth, on the graphics card). The three layers use different lengths so the
-   motion never repeats in step. */
+/* The hero dragon (see DESIGN.md, Motion). At rest the cut layers add up to the original mark. With motion allowed:
+   - the whole mark drifts slowly and breathes (the head rises and settles, a hair of scale);
+   - the mane is six strips, each turning a little about its root, on its own beat and with a head start or a
+     lag of its own, and each strip's tip lags its root: that is what makes a ripple run through the flames;
+   - every so often a gust leans the whole mane back a touch and relaxes;
+   - the eye blinks at uneven moments, sometimes twice.
+   Only transforms are animated (the blink uses a small clip on a tiny patch), so it stays smooth. The cycle
+   lengths differ so the motion never repeats in step. Keep the amounts small: it should be felt, not noticed. */
 .dragon-eye {
   clip-path: inset(0 0 100% 0);
 }
-.dragon-float,
-.dragon-mane,
-.dragon-tips {
-  transform-origin: 50% 50%;
+.dragon-breathe {
+  transform-origin: 56% 72%;
 }
-.dragon-mane {
-  transform-origin: 33.3% 44.9%;
-}
-.dragon-tips {
-  transform-origin: 27.7% 51.8%;
-}
-@keyframes dragon-blink {
-  0%,
-  90% {
-    clip-path: inset(0 0 100% 0);
-  }
-  93.5%,
-  95.5% {
-    clip-path: inset(0 0 0 0);
-  }
-  99%,
-  100% {
-    clip-path: inset(0 0 100% 0);
-  }
+.dragon-gust {
+  transform-origin: 60.7% 52.5%;
 }
 @keyframes dragon-float {
   from {
-    transform: translate3d(0, 0.5%, 0) rotate(0.25deg);
+    transform: translate3d(0, 0.3%, 0) rotate(0.15deg);
   }
   to {
-    transform: translate3d(0, -0.9%, 0) rotate(-0.25deg);
+    transform: translate3d(0, -0.5%, 0) rotate(-0.15deg);
   }
 }
-@keyframes dragon-mane {
+@keyframes dragon-breathe {
   from {
-    transform: rotate(0.9deg);
+    transform: translate3d(0, 0.35%, 0) scale(1) rotate(0.18deg);
   }
   to {
-    transform: rotate(-1deg);
+    transform: translate3d(0, -0.35%, 0) scale(1.004) rotate(-0.18deg);
   }
 }
-@keyframes dragon-tips {
+@keyframes dragon-gust {
+  0%,
+  100% {
+    transform: rotate(0deg) scaleX(1);
+  }
+  38%,
+  52% {
+    transform: rotate(-0.7deg) scaleX(1.012);
+  }
+  75% {
+    transform: rotate(0.25deg) scaleX(0.998);
+  }
+}
+@keyframes dragon-sway {
   from {
-    transform: rotate(1.4deg);
+    transform: rotate(var(--ra));
   }
   to {
-    transform: rotate(-1.5deg);
+    transform: rotate(calc(var(--ra) * -1));
+  }
+}
+@keyframes dragon-tip {
+  from {
+    transform: rotate(1.1deg);
+  }
+  to {
+    transform: rotate(-1.2deg);
+  }
+}
+/* One cycle is 13.7s: a blink, a double blink, and a blink. Closing is quicker than opening. */
+@keyframes dragon-blink {
+  0%,
+  15%,
+  18.6%,
+  55%,
+  57.6%,
+  59%,
+  61.6%,
+  86%,
+  89.4%,
+  100% {
+    clip-path: inset(0 0 100% 0);
+  }
+  15.8%,
+  17%,
+  55.8%,
+  56.3%,
+  59.8%,
+  60.3%,
+  86.9%,
+  87.8% {
+    clip-path: inset(0 0 0 0);
   }
 }
 @media (prefers-reduced-motion: no-preference) {
   .dragon-eye {
-    animation: dragon-blink 6.4s ease-in-out 2.6s infinite;
+    animation: dragon-blink 13.7s ease-in-out 2.4s infinite;
   }
   .dragon-float {
-    animation: dragon-float 7.5s ease-in-out infinite alternate;
+    animation: dragon-float 8.5s ease-in-out infinite alternate;
   }
-  .dragon-mane {
-    animation: dragon-mane 5.6s ease-in-out -1.5s infinite alternate;
+  .dragon-breathe {
+    animation: dragon-breathe 4.8s ease-in-out infinite alternate;
+  }
+  .dragon-gust {
+    animation: dragon-gust 11s ease-in-out -3s infinite;
+  }
+  .dragon-sway {
+    animation: dragon-sway var(--dur) ease-in-out var(--dl) infinite alternate;
     will-change: transform;
   }
-  .dragon-tips {
-    animation: dragon-tips 4.3s ease-in-out -0.8s infinite alternate;
+  .dragon-tip {
+    animation: dragon-tip calc(var(--dur) * 0.85) ease-in-out calc(var(--dl) - 0.8s) infinite alternate;
     will-change: transform;
   }
   .hero-rise {

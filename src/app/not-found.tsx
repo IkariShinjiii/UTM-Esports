@@ -19,6 +19,7 @@ export default function NotFound() {
     <>
       <Nav />
       <main
+        id="content"
         className="on-dark field tex-red relative flex min-h-[calc(100svh-4.75rem)] flex-col justify-center overflow-hidden pb-[calc(var(--rise)+3rem)] pt-12 text-white"
       >
         {/* The mark is decoration */}
@@ -31,7 +32,7 @@ export default function NotFound() {
           height={629}
           className="pointer-events-none absolute bottom-0 right-0 w-[150%] max-w-none translate-x-[45%] translate-y-[10%] opacity-90 md:bottom-auto md:right-[-6%] md:top-1/2 md:h-[96%] md:w-auto md:translate-x-0 md:-translate-y-1/2"
         />
-        <div className={`${wrap} relative z-10`}>
+        <div className={`${wrap} relative z-10 w-full`}>
           <p aria-hidden className="font-display text-[clamp(5rem,18vw,11rem)] font-extrabold italic leading-[0.85] tracking-[-0.03em] text-white/25">
             404
           </p>

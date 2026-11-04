@@ -39,6 +39,7 @@ export default async function GamePage({ params }: { params: Promise<{ game: str
     <>
       <Nav />
       <div
+        id="content"
         className="on-dark tex-dark ghost relative overflow-hidden bg-ink pb-[calc(var(--rise)+3rem)] pt-10 text-white [--gop:0.14] [--gpos:95%_12%] [--ghost-size:auto_78%] md:pt-14"
         style={
           art

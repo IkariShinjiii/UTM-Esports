@@ -130,6 +130,13 @@ export function Nav() {
 
   return (
     <header className="on-dark sticky top-0 z-50 border-b-[3px] border-track bg-ink text-white">
+      {/* For keyboard users: the first Tab stop on every page, so the menu can be skipped */}
+      <a
+        href="#content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[60] focus:bg-white focus:px-5 focus:py-3 focus:text-sm focus:font-bold focus:uppercase focus:tracking-wide focus:text-track"
+      >
+        Skip to content
+      </a>
       <div className="mx-auto flex max-w-[90rem] items-center justify-between gap-6 px-6 py-3 md:px-12">
         <Link href="/" aria-label="UTM Esports, home" className="shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}

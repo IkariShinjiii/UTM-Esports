@@ -13,7 +13,7 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
 
   return (
     <main className="on-dark field tex-red relative flex min-h-svh flex-col justify-center overflow-hidden py-16 text-white">
-      <div className={`${wrap} relative z-10`}>
+      <div className={`${wrap} relative z-10 w-full`}>
         <h1 className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold italic uppercase leading-[1] tracking-[-0.01em]">
           Something went wrong.
         </h1>
