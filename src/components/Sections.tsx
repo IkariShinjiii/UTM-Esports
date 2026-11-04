@@ -518,7 +518,7 @@ export function Footer() {
           <div className="mt-16 flex flex-col gap-3 border-t border-white/25 pt-8">
             <p className="text-base">
               © {new Date().getFullYear()} {settings.orgName}. {settings.tagline}{" "}
-              <a href={settings.privacyUrl} className="underline underline-offset-4 hover:no-underline">
+              <a href={settings.privacyUrl} className="inline-block py-2 underline underline-offset-4 hover:no-underline">
                 Privacy notice
               </a>
             </p>

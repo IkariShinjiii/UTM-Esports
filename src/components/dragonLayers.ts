@@ -2,8 +2,8 @@
 // Positions are percentages of the box the layer sits in: the whole mark for the head and each strip's root
 // piece, and the root piece for its tip piece (the tip is nested inside the root so it follows it).
 // "origin" is the pivot the piece turns around, as a percentage of its own box.
-export type DragonPiece = { src: string; left: number; top: number; width: number; height: number; origin: [number, number] };
-export const dragonHead = {"src":"/images/dragon-head.webp","left":0,"top":0,"width":70.417,"height":100};
+export type DragonPiece = { src: string; left: number; top: number; width: number; height: number; w: number; h: number; origin: [number, number] };
+export const dragonHead = {"src":"/images/dragon-head.webp","left":0,"top":0,"width":70.417,"height":100,"w":557,"h":629};
 export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
   {
     "root": {
@@ -12,6 +12,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 17.488,
       "width": 8.85,
       "height": 9.539,
+      "w": 70,
+      "h": 60,
       "origin": [
         -105.714,
         -8.333
@@ -23,6 +25,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": -76.667,
       "width": 305.714,
       "height": 176.667,
+      "w": 214,
+      "h": 106,
       "origin": [
         10.748,
         38.679
@@ -36,6 +40,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 20.827,
       "width": 29.33,
       "height": 20.509,
+      "w": 232,
+      "h": 129,
       "origin": [
         37.931,
         49.612
@@ -47,6 +53,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 0,
       "width": 76.293,
       "height": 100,
+      "w": 177,
+      "h": 129,
       "origin": [
         12.994,
         49.612
@@ -60,6 +68,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 35.135,
       "width": 37.168,
       "height": 18.919,
+      "w": 294,
+      "h": 119,
       "origin": [
         51.02,
         49.58
@@ -71,6 +81,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 0,
       "width": 60.204,
       "height": 96.639,
+      "w": 177,
+      "h": 115,
       "origin": [
         12.994,
         51.304
@@ -84,6 +96,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 47.854,
       "width": 37.168,
       "height": 18.919,
+      "w": 294,
+      "h": 119,
       "origin": [
         51.02,
         49.58
@@ -95,6 +109,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 0,
       "width": 70.408,
       "height": 100,
+      "w": 207,
+      "h": 119,
       "origin": [
         11.111,
         49.58
@@ -108,6 +124,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 60.572,
       "width": 37.168,
       "height": 17.329,
+      "w": 294,
+      "h": 109,
       "origin": [
         51.02,
         49.541
@@ -119,6 +137,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 0,
       "width": 58.503,
       "height": 100,
+      "w": 172,
+      "h": 109,
       "origin": [
         13.372,
         49.541
@@ -132,6 +152,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 71.701,
       "width": 32.996,
       "height": 10.97,
+      "w": 261,
+      "h": 69,
       "origin": [
         44.828,
         81.884
@@ -143,6 +165,8 @@ export const dragonStrips: { root: DragonPiece; tip: DragonPiece | null }[] = [
       "top": 0,
       "width": 65.9,
       "height": 100,
+      "w": 172,
+      "h": 69,
       "origin": [
         13.372,
         81.884

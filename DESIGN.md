@@ -190,6 +190,9 @@ A checkered finish-line strip, a join bar, four link columns (Play, Watch, Conne
 ### Org chart
 Card Ink boxes joined by straight 3px lines: CEO (red title), admins, three groups side by side, then the MLBB division. People can carry a TikTok link.
 
+### Back button and skip link
+The Back button goes back by the site's own history (`NavHistory` remembers the pages opened in this tab), so it returns to the page the visitor was on, with its scroll position, even when they arrived from another site. With no earlier page of ours it opens a sensible fallback (the home page, the section, or the Results list) without reloading. Every page starts with a "Skip to content" link, visible only when it takes keyboard focus, that jumps past the menu to the page's first block (`id="content"`).
+
 ### Icon and link preview
 The favicon is the dragon in white on the red field gradient, as a vector (`icon.svg`, with `apple-icon.png` and `favicon.ico` made from it). The link preview picture (1200 by 630) is the ink dragon on the field beside the logo and the motto.
 

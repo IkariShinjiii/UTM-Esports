@@ -37,7 +37,7 @@ export default async function ResultPage({ params }: { params: Promise<{ slug: s
   return (
     <>
       <Nav />
-      <main className="on-dark tex-dark relative bg-ink pb-24 pt-10 text-white md:pt-14">
+      <main id="content" className="on-dark tex-dark relative bg-ink pb-24 pt-10 text-white md:pt-14">
         <div className={wrap}>
           <BackButton fallback="/results" />
           <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">

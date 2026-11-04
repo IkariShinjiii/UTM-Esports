@@ -32,7 +32,7 @@ export function HeroMark() {
 
   return (
     <section
-      id="top"
+      id="content"
       aria-labelledby="hero-title"
       className="on-dark field tex-red relative flex min-h-[calc(100svh-4.75rem)] flex-col overflow-hidden text-white"
     >
@@ -50,9 +50,9 @@ export function HeroMark() {
           <div className="dragon-float relative h-full w-full">
             <div className="dragon-breathe absolute inset-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={dragonHead.src} alt="" fetchPriority="high" draggable={false} className="absolute" style={place(dragonHead)} />
+              <img src={dragonHead.src} alt="" width={dragonHead.w} height={dragonHead.h} fetchPriority="high" draggable={false} className="absolute" style={place(dragonHead)} />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/dragon-eye.webp" alt="" className="dragon-eye absolute" style={{ left: "29.709%", top: "53.1%", width: "6.953%", height: "9.698%" }} />
+              <img src="/images/dragon-eye.webp" alt="" width={55} height={61} className="dragon-eye absolute" style={{ left: "29.709%", top: "53.1%", width: "6.953%", height: "9.698%" }} />
               <div className="dragon-gust absolute inset-0">
                 {dragonStrips.map((strip, i) => (
                   <div
@@ -69,11 +69,11 @@ export function HeroMark() {
                     }
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={strip.root.src} alt="" draggable={false} className="block h-full w-full" />
+                    <img src={strip.root.src} alt="" width={strip.root.w} height={strip.root.h} draggable={false} className="block h-full w-full" />
                     {strip.tip && (
                       <div className="dragon-tip absolute" style={{ ...place(strip.tip), transformOrigin: pivot(strip.tip) }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={strip.tip.src} alt="" draggable={false} className="block h-full w-full" />
+                        <img src={strip.tip.src} alt="" width={strip.tip.w} height={strip.tip.h} draggable={false} className="block h-full w-full" />
                       </div>
                     )}
                   </div>
