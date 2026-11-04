@@ -82,7 +82,7 @@ components:
 
 The system is the UTM dragon scaled up to a page. A red field takes the logo's gradient (deep crimson at top left to bright red at bottom right). Black slabs and white slabs alternate with it. Type is heavy, uppercase, italic and tightly set, leaning like the wordmark. Every box (buttons, cards, tiles, plates, photo frames) is a plain rectangle: the sheared and slanted shapes of the first build were removed at the club's request and must not come back.
 
-The dragon appears in three ways: as a poster-scale ink silhouette on the hero, as a faint ghost behind each section (tinted white on red, red on black, ink on white), and as the red mark in the footer's corner. It is only ever behind content. Sections stack with a shallow diagonal top edge (about 3 to 4 degrees) that overlaps the section above; that edge is the one remaining diagonal in the system.
+The dragon appears in three ways: as a poster-scale ink silhouette on the hero (which moves very slightly, see Motion), as a faint ghost behind each section (tinted white on red, red on black, ink on white), and as the red mark in the footer's corner. It is only ever behind content. Sections stack with a shallow diagonal top edge (about 3 to 4 degrees) that overlaps the section above; that edge is the one remaining diagonal in the system.
 
 Calm is a requirement. Big type overwhelmed early visitors, so section headings are modest, cards are quiet, and red is reserved for championships, primary actions and the active state.
 
@@ -164,23 +164,32 @@ Plain rectangles. No rounded corners, no skew, no clip-paths on boxes. Section t
 ### Game tiles
 Ink rectangles with the character art fading in from the right. On hover or focus a red panel sweeps in from the left behind the text and art, and sweeps out to the right on leave (GSAP, moving by position so quick in-and-out never jumps).
 
+### Hero dragon
+The mark is cut into three stacked layers (head, mane, flame tips) plus a small ink patch over the eye cut-out, all made from the one silhouette so that at rest they add up to the original (checked to within 2 of 255 on any pixel). The layers are cut through empty gaps and solid dark areas, never through a flame, and fade into each other only where there is solid ink. The files are `dragon-head`, `dragon-mane`, `dragon-tips` and `dragon-eye` in `public/images/`. If the mark is ever redrawn, the layers must be cut again.
+
 ### Logo bar
-Under the hero. A looping strip of the five game logos (each opens its page), a divider, then the partners in light versions (CDG Solutions, Nbrims, each linking out). Every logo has the same height and side space. It slows to a stop on hover, focus or touch-hold, and has a Pause button that appears only for keyboard users.
+Under the hero. A looping strip of the five game logos (each opens its page), a divider, then the partners in light versions (CDG Solutions, Nbrims, each linking out). Every logo has the same height and side space. It slows to a stop on hover, focus or touch-hold, and has a Pause button that appears only for keyboard users. With reduced motion it does not move: it becomes a row the visitor scrolls.
 
 ### Picture shuffle
-Pictures swipe sideways on their own every 3 seconds (GSAP), with the photo gliding a little slower than its frame. They can be dragged. There is no visible pause button; a Pause button appears for keyboard users only.
+Pictures swipe sideways on their own every 3 seconds (GSAP), with the photo gliding a little slower than its frame. They can be dragged. There is no visible pause button; a Pause button appears for keyboard users only. With reduced motion it starts paused and the dots change the picture without sliding.
+
+### Loading skeleton
+A picture that loads late (below the fold) sits on a dark block with a slow light band passing over it (`SkelImg`, `.skeleton`), so a slow connection shows a placeholder, not a gap. The band holds still with reduced motion. Pictures that load with the page do not use it.
 
 ### Result cards
 Card Ink plate: placement and date, the poster in a Well Ink square, the event title, one grey line (game and team). Only a Champion gets the red tag. The home page shows the championships; the Results page shows every placing.
 
 ### More menu
-A light square panel with a red top edge and a short drop-in (GSAP). Closes on Escape, outside click or when focus leaves.
+A light square panel with a red top edge and a short drop-in (GSAP; none with reduced motion). It opens when a mouse hovers More and closes a beat after the pointer leaves, and the gap under the button is part of the hover area so the pointer can reach the list. Touch and keyboard open it with the button. Closes on Escape, outside click or when focus leaves.
 
 ### Footer
 A checkered finish-line strip, a join bar, four link columns (Play, Watch, Connect, Partners), the logo, and the publisher credit, with the red dragon cropped in the bottom-right corner.
 
 ### Org chart
 Card Ink boxes joined by straight 3px lines: CEO (red title), admins, three groups side by side, then the MLBB division. People can carry a TikTok link.
+
+### Icon and link preview
+The favicon is the dragon in white on the red field gradient, as a vector (`icon.svg`, with `apple-icon.png` and `favicon.ico` made from it). The link preview picture (1200 by 630) is the ink dragon on the field beside the logo and the motto.
 
 ### Textures
 - **tex-dark:** hexagon mesh plus film grain on ink slabs.
@@ -192,7 +201,11 @@ Blocks below the fold rise 32px and fade in over about 1.1 seconds when first sc
 
 ## Motion
 
-Motion is on purpose and limited: the picture shuffle, the logo bar, the tile wipe, the More menu drop and the scroll reveal. The club asked for the shuffle and logo bar to move on their own, so those two do not stop for the reduced-motion setting; they pause on hover, focus and touch-hold, and offer a keyboard Pause button. The scroll reveal keeps a plain fade for reduced motion. All animation uses transform and opacity.
+Motion is on purpose and limited: the hero dragon, the picture shuffle, the logo bar, the tile wipe, the More menu drop, the loading skeleton and the scroll reveal. All of it uses transform and opacity (the eye blink uses a small clip), and all of it respects the reduced-motion setting.
+
+- **Hero dragon:** the whole mark floats up and down about 8px on a 7.5 second cycle with a tiny tilt. The mane sways about 1 degree from where it joins the head (5.6 seconds), and the outer flame tips sway a little more (about 1.5 degrees, 4.3 seconds) on top of that, like flying into the wind. The eye blinks every 6.4 seconds. The cycle lengths differ so the motion never repeats in step. It is meant to be felt more than seen.
+- **Reduced motion:** the dragon holds still, the picture shuffle starts paused, the logo bar becomes a scrollable row, the skeleton band stops, the menu drop is skipped, and the scroll reveal keeps only a plain fade.
+- The shuffle and logo bar also pause on hover, focus and touch-hold, and offer a Pause button for keyboard users.
 
 ## Do's and Don'ts
 
@@ -202,11 +215,13 @@ Motion is on purpose and limited: the picture shuffle, the logo bar, the tile wi
 - **Do** keep ground to three states: red field, Warm Ink, white.
 - **Do** keep the dragon and textures behind content, faint and non-interactive.
 - **Do** show real photos, logos and results only.
-- **Do** keep the first load under 1 MB: use the light copies (ghost dragons, poster thumbnails, gallery photos).
+- **Do** keep the first load under 1 MB: use the light copies (ghost dragons, poster thumbnails, gallery photos). Measure it before adding images.
+- **Do** give anything that moves on its own a reduced-motion version.
 
 ### Don't:
 - **Don't** bring back skewed or sheared boxes, slashes over photos, or rounded corners.
 - **Don't** use red for anything except championships, primary actions and the active item.
 - **Don't** crop a jersey graphic or a certificate.
 - **Don't** put the dragon over text, cards or buttons.
+- **Don't** make the dragon's motion bigger or faster; if it is noticed as an animation, it is too much.
 - **Don't** invent results, sponsors, quotes or biographies. Leave a field out until it is real.
