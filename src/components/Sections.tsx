@@ -256,7 +256,9 @@ export function Mosaic({ items }: { items: Moment[] }) {
             <figure
               key={m.image}
               style={{ "--ar": ratioOf(m) } as React.CSSProperties}
-              className="group relative min-w-0 overflow-hidden bg-well md:[flex:var(--ar)_1_0%]"
+              className={`group relative min-w-0 overflow-hidden bg-well md:[flex:var(--ar)_1_0%] ${
+                ratioOf(m) < 1 ? "max-md:mx-auto max-md:w-[min(100%,calc(34rem*var(--ar)))]" : ""
+              }`}
             >
               {m.videoUrl ? (
                 <ClipTile m={m} />
@@ -268,7 +270,7 @@ export function Mosaic({ items }: { items: Moment[] }) {
                   width={m.width ?? 1137}
                   height={m.height ?? 640}
                   draggable={false}
-                  className={`block h-auto w-full ${ratioOf(m) < 1 ? "max-md:mx-auto max-md:max-h-[34rem] max-md:w-auto" : ""}`}
+                  className="block h-auto w-full"
                 />
               )}
               {/* The caption sits over a soft fade at the bottom. With a mouse it appears on hover; on touch screens it is always there. */}
