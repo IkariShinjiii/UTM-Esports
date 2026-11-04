@@ -30,19 +30,28 @@ export function HeroMark() {
       aria-labelledby="hero-title"
       className="on-dark field tex-red relative flex min-h-[calc(100svh-4.75rem)] flex-col overflow-hidden text-white"
     >
-      {/* The mark is decoration: it carries no information the headline does not. Two ink patches sit exactly
-          over its eye and mouth cut-outs (cut from the mark's own shape) and sweep shut and open: a slow blink
-          and a small movement of the mouth. They only run when motion is allowed (see globals.css). */}
+      {/* The mark is decoration: it carries no information the headline does not. It is cut into three layers
+          (head, mane, flame tips) that stack back into the full mark, and an ink patch over the eye cut-out.
+          When motion is allowed the mark floats, the mane sways from the head and the tips sway a little more,
+          like it is flying into the wind, and the eye blinks slowly (see globals.css). */}
       <div
         aria-hidden
         className="hero-slide pointer-events-none absolute bottom-0 right-0 aspect-[791/629] w-[190%] max-w-none translate-x-[47%] translate-y-[8%] md:bottom-auto md:right-[-4%] md:top-1/2 md:h-[106%] md:w-auto md:translate-x-0 md:-translate-y-1/2"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/dragon-ink.webp" alt="" width={791} height={629} fetchPriority="high" className="block h-full w-full" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/dragon-eye.webp" alt="" className="dragon-eye absolute" style={{ left: "29.709%", top: "53.1%", width: "6.953%", height: "9.698%" }} />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/dragon-mouth.webp" alt="" className="dragon-mouth absolute" style={{ left: "8.85%", top: "75.199%", width: "28.571%", height: "12.401%" }} />
+        <div className="dragon-float relative h-full w-full">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/dragon-head.webp" alt="" fetchPriority="high" className="absolute left-0 top-0 h-full" style={{ width: "70.417%" }} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/dragon-eye.webp" alt="" className="dragon-eye absolute" style={{ left: "29.709%", top: "53.1%", width: "6.953%", height: "9.698%" }} />
+          <div className="dragon-mane absolute" style={{ left: "41.719%", top: "27.822%", width: "34.134%", height: "54.848%" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/dragon-mane.webp" alt="" className="block h-full w-full" />
+            <div className="dragon-tips absolute" style={{ left: "72.963%", top: "-32.174%", width: "97.778%", height: "132.174%" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/dragon-tips.webp" alt="" className="block h-full w-full" />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className={`${wrap} relative z-10 flex w-full flex-1 flex-col items-start justify-center py-12 md:py-20`}>
