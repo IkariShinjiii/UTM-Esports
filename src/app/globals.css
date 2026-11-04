@@ -204,7 +204,47 @@ body {
     transform: translateX(8%);
   }
 }
+/* The dragon's eye and mouth patches: hidden by default (the cut-outs show), swept shut and open when motion is allowed.
+   A slow blink every few seconds; the mouth closes a little, holds, and opens again, on a longer cycle. */
+.dragon-eye,
+.dragon-mouth {
+  clip-path: inset(0 0 100% 0);
+}
+@keyframes dragon-blink {
+  0%,
+  90% {
+    clip-path: inset(0 0 100% 0);
+  }
+  93.5%,
+  95.5% {
+    clip-path: inset(0 0 0 0);
+  }
+  99%,
+  100% {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+@keyframes dragon-mouth {
+  0%,
+  18% {
+    clip-path: inset(0 0 100% 0);
+  }
+  36%,
+  44% {
+    clip-path: inset(0 0 62% 0);
+  }
+  62%,
+  100% {
+    clip-path: inset(0 0 100% 0);
+  }
+}
 @media (prefers-reduced-motion: no-preference) {
+  .dragon-eye {
+    animation: dragon-blink 6.4s ease-in-out 2.6s infinite;
+  }
+  .dragon-mouth {
+    animation: dragon-mouth 9s ease-in-out 1.8s infinite;
+  }
   .hero-rise {
     animation: hero-rise 800ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
     animation-delay: var(--d, 0ms);

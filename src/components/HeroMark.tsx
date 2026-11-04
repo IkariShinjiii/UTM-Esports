@@ -30,17 +30,20 @@ export function HeroMark() {
       aria-labelledby="hero-title"
       className="on-dark field tex-red relative flex min-h-[calc(100svh-4.75rem)] flex-col overflow-hidden text-white"
     >
-      {/* The mark is decoration: it carries no information the headline does not */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/images/dragon-ink.webp"
-        alt=""
+      {/* The mark is decoration: it carries no information the headline does not. Two ink patches sit exactly
+          over its eye and mouth cut-outs (cut from the mark's own shape) and sweep shut and open: a slow blink
+          and a small movement of the mouth. They only run when motion is allowed (see globals.css). */}
+      <div
         aria-hidden
-        width={791}
-        height={629}
-        fetchPriority="high"
-        className="hero-slide pointer-events-none absolute bottom-0 right-0 w-[190%] max-w-none translate-x-[47%] translate-y-[8%] md:bottom-auto md:right-[-4%] md:top-1/2 md:h-[106%] md:w-auto md:translate-x-0 md:-translate-y-1/2"
-      />
+        className="hero-slide pointer-events-none absolute bottom-0 right-0 aspect-[791/629] w-[190%] max-w-none translate-x-[47%] translate-y-[8%] md:bottom-auto md:right-[-4%] md:top-1/2 md:h-[106%] md:w-auto md:translate-x-0 md:-translate-y-1/2"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/dragon-ink.webp" alt="" width={791} height={629} fetchPriority="high" className="block h-full w-full" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/dragon-eye.webp" alt="" className="dragon-eye absolute" style={{ left: "29.709%", top: "53.1%", width: "6.953%", height: "9.698%" }} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/dragon-mouth.webp" alt="" className="dragon-mouth absolute" style={{ left: "8.85%", top: "75.199%", width: "28.571%", height: "12.401%" }} />
+      </div>
 
       <div className={`${wrap} relative z-10 flex w-full flex-1 flex-col items-start justify-center py-12 md:py-20`}>
         <h1
