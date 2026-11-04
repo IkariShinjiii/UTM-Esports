@@ -31,7 +31,7 @@ The site has one job: turn visitors from Facebook, Instagram and TikTok into **D
 | Fonts | Kanit (display) and Barlow (text), through `next/font` |
 | Hosting | Vercel |
 | CI | GitHub Actions |
-| Node | 22.x |
+| Node | 26.x (LTS) |
 
 There is no database and no backend. Applications and partner enquiries go to Google Forms.
 
@@ -39,7 +39,7 @@ There is no database and no backend. Applications and partner enquiries go to Go
 
 ## Getting started
 
-You need Node 22 and npm.
+You need Node 26 and npm.
 
 ```bash
 npm install
@@ -57,7 +57,7 @@ Open http://localhost:3000.
 
 Run `npm run lint`, `npx tsc --noEmit` and `npm run build` before opening a pull request. CI runs the same three.
 
-> npm prints an engines warning if you use a Node version other than 22. It does not block anything.
+> npm prints an engines warning if you use a Node version other than 26. It does not block anything.
 
 ---
 
@@ -140,7 +140,7 @@ The Vercel project `utm-esports` is connected to this repository.
 | Pull request | Preview deployment (behind Vercel login) |
 | Merge to `main` | Production deployment at https://utm-esports.vercel.app |
 
-[`vercel.json`](vercel.json) sets the Next.js preset, and `engines` in [`package.json`](package.json) pins Node 22.
+[`vercel.json`](vercel.json) sets the Next.js preset, and `engines` in [`package.json`](package.json) pins Node 26.
 
 Vercel refuses to deploy a vulnerable Next.js version, so keep `next` up to date within its minor version.
 
