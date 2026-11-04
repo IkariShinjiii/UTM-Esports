@@ -24,10 +24,16 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
   const photoEls = useRef<(HTMLDivElement | null)[]>([]);
   const startX = useRef<number | null>(null);
   const prevOffsets = useRef<number[] | null>(null);
+  const [reduced, setReduced] = useState(false); // the visitor asked for reduced motion
 
   useEffect(() => {
     // Keep the second picture out of the page's first load
     const warm = () => setLoaded((l) => Math.max(l, 2));
+    // Visitors who ask for reduced motion get a still picture they can step through with the dots
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStopped(true);
+      setReduced(true);
+    }
     if (document.readyState === "complete") warm();
     else window.addEventListener("load", warm, { once: true });
     return () => window.removeEventListener("load", warm);
@@ -57,13 +63,13 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
       const photo = photoEls.current[i];
       if (!slide || !photo) return;
       const jumped = prev === null || Math.abs(o - (prev[i] ?? o)) > 1;
-      const still = drag !== 0 || jumped;
+      const still = drag !== 0 || jumped || reduced;
       gsap.to(slide, { xPercent: o * 100, x: drag, duration: still ? 0 : 0.95, ease: "power3.inOut", overwrite: "auto" });
       gsap.to(photo, { xPercent: -o * 8, duration: still ? 0 : 0.95, ease: "power3.inOut", overwrite: "auto" });
     });
     prevOffsets.current = offsets;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pos, drag, count]);
+  }, [pos, drag, count, reduced]);
 
   const current = ((pos % count) + count) % count;
 

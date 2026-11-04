@@ -19,6 +19,7 @@ export function LogoCarousel({ items }: { items: LogoItem[] }) {
   const tween = useRef<gsap.core.Tween | null>(null);
   const [stopped, setStopped] = useState(false);
   const stoppedRef = useRef(false);
+  const [reduced, setReduced] = useState(false); // the visitor asked for reduced motion: no drifting, scroll instead
 
   // Repeat the list so one copy is always wider than the screen, then slide by exactly one copy.
   const group = Array.from({ length: 3 }, () => items).flat();
@@ -26,6 +27,11 @@ export function LogoCarousel({ items }: { items: LogoItem[] }) {
   useEffect(() => {
     const el = track.current;
     if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      stoppedRef.current = true;
+      setStopped(true);
+      setReduced(true);
+    }
     const build = () => {
       tween.current?.kill();
       gsap.set(el, { xPercent: 0 });
@@ -110,7 +116,7 @@ export function LogoCarousel({ items }: { items: LogoItem[] }) {
       role="group"
       aria-roledescription="carousel"
       aria-label="Games we play and our partners"
-      className="relative overflow-hidden py-[calc(var(--rise)/2+0.5rem)]"
+      className={`relative py-[calc(var(--rise)/2+0.5rem)] ${reduced ? "overflow-x-auto overflow-y-hidden" : "overflow-hidden"}`}
       onMouseEnter={() => slow(0)}
       onMouseLeave={() => slow(1)}
       onFocus={() => slow(0)}
