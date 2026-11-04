@@ -75,7 +75,10 @@ src/
     highlights/             The photo gallery
     merch/                  Jerseys and merch
     teams/[game]/           One page per game
-    layout.tsx              Fonts and site metadata
+    layout.tsx              Fonts and site metadata (link previews)
+    not-found.tsx, error.tsx  The 404 page and the error page
+    icon.svg, apple-icon.png, favicon.ico  The vector favicon and its other sizes
+    opengraph-image.jpg, twitter-image.jpg  The picture shown when a link is shared
     globals.css             Colours, textures, animations
   components/
     Nav.tsx                 Top bar, the More menu (opens on hover) and the phone menu
@@ -162,6 +165,9 @@ The Vercel project `utm-esports` is connected to this repository.
 
 [`vercel.json`](vercel.json) sets the Next.js preset, and `engines` in [`package.json`](package.json) pins Node 26.
 
+Link previews use the site address in `src/app/layout.tsx`. When a custom domain is connected, set
+`NEXT_PUBLIC_SITE_URL` in the Vercel project so preview images use it.
+
 Vercel refuses to deploy a vulnerable Next.js version, so keep `next` up to date within its minor version.
 
 ---
@@ -181,7 +187,7 @@ Vercel refuses to deploy a vulnerable Next.js version, so keep `next` up to date
 - The real tryout process and FAQ answers (the current text is a holding version)
 - Consent for the photos on the site, and privacy wording for applicants under 18 (Philippine Data Privacy Act, RA 10173)
 - Analytics: buttons already carry `data-track` names, but no analytics script is installed yet
-- Link previews and favicon: no Open Graph image, sitemap or robots file yet, and the favicon is still the Next.js default
+- Search files: no `robots.txt` or sitemap yet
 - A custom domain
 - The Pause buttons on the picture shuffle and the logo bar only show for keyboard users
 - `DESIGN.md` still describes slanted boxes, but the site now renders plain rectangles
