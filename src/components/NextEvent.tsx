@@ -89,8 +89,8 @@ export function NextEvent({
               </p>
               <ul aria-hidden className="grid grid-cols-4 gap-3 md:gap-5">
                 {(remaining === null ? parts(0) : parts(remaining)).map(([label, value]) => (
-                  <li key={label} className="skew bg-track px-1 py-4 text-center md:py-6">
-                    <div className="unskew">
+                  <li key={label} className="bg-track px-1 py-4 text-center md:py-6">
+                    <div>
                       <p className="font-display text-3xl font-extrabold italic leading-none tabular-nums md:text-5xl">
                         {remaining === null ? "--" : String(value).padStart(2, "0")}
                       </p>

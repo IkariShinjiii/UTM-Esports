@@ -66,7 +66,7 @@ export default function AboutPage() {
                 <p className="text-lg leading-snug">
                   {achievements.length} placings so far, from Valorant to Mobile Legends to Wild Rift.
                 </p>
-                <Link href="/#results" className={`${btnRed} mt-8`}>
+                <Link href="/results" className={`${btnRed} mt-8`}>
                   See the finish line
                 </Link>
               </div>

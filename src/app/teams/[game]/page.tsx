@@ -96,8 +96,8 @@ export default async function GamePage({ params }: { params: Promise<{ game: str
                     </h2>
                     <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
                       {team.players.map((pl) => (
-                        <li key={pl.ign} className="bg-[#241214] p-3 pb-5 text-white md:p-4 md:pb-6">
-                          <div className="relative aspect-square overflow-hidden bg-[#12080a]">
+                        <li key={pl.ign} className="bg-card p-3 pb-5 text-white md:p-4 md:pb-6">
+                          <div className="relative aspect-square overflow-hidden bg-well">
                             {pl.photo ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img src={pl.photo} alt={pl.ign} loading="lazy" className="h-full w-full object-cover" />

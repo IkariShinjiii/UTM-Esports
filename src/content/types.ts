@@ -41,6 +41,7 @@ export interface EsportsEvent {
 export interface Sponsor {
   name: string;
   logo?: string;
+  logoOnDark?: string; // a version of the logo for dark backgrounds (dark parts made light)
   tier?: string;
   url?: string;
 }
@@ -64,11 +65,41 @@ export interface SiteSettings {
   social: { facebook: string; instagram: string; tiktok: string; discord: string };
 }
 
+// One box of the org chart on the CEO page
+// A person in the chart: just a name, or a name with a link to their TikTok
+export type OrgPerson = string | { name: string; tiktok?: string };
+
+export interface OrgGroup {
+  title: string;
+  subtitle?: string;
+  names: OrgPerson[];
+}
+
+export interface Org {
+  top: OrgGroup; // the CEO
+  second: OrgGroup; // reports to the CEO
+  third: OrgGroup[]; // report to the second level, side by side
+  division: OrgGroup; // the first team on the page
+}
+
+export interface Ceo {
+  name: string;
+  title: string;
+  photo: string; // path under /images
+  photoAlt: string;
+  intro?: string; // one line about him, shown under the name
+  message?: string[]; // his own words, one string per paragraph
+  motto?: string; // a closing line, shown on its own
+}
+
 export interface Moment {
   image: string; // path under /images
   alt: string;
   title: string;
   caption: string;
+  width?: number; // the picture's pixel size, so the gallery can keep its shape while it loads
+  height?: number;
+  date?: string; // "YYYY-MM", from the file name or the photo's own date. Used to group photos on the Highlights page.
   videoUrl?: string; // optional embed URL; the clip loads only when a visitor taps play
 }
 
@@ -100,7 +131,10 @@ export interface SiteContent {
   settings: SiteSettings;
   about: About;
   heroSlides: HeroSlide[];
-  moments: Moment[];
+  ceo: Ceo;
+  org: Org;
+  moments: Moment[]; // the photos shown on the home page
+  moreMoments: Moment[]; // more photos, shown on the Highlights page after the ones above
   faq: Faq[];
   games: Record<string, string>; // GameId -> display name, in the order the tiles appear
   gameShort?: Record<string, string>; // GameId -> short mark shown large on its tile

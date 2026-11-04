@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { content } from "@/content/site";
+import { LogoCarousel, type LogoItem } from "./LogoCarousel";
 import { btnWhite, linkOnDark, wrap } from "./Sections";
 import { SocialIcon } from "./SocialIcon";
 
@@ -7,7 +7,22 @@ import { SocialIcon } from "./SocialIcon";
 // the headline and its mane running off the screen. One headline, one button, and a bar naming the games,
 // each opening that game's page. The nav is 75px tall, so the hero fills what is left under it.
 export function HeroMark() {
-  const { settings, games, gameShort, teams } = content;
+  const { settings, games, gameShort, gameLogo, teams, sponsors } = content;
+
+  // The bar under the hero: the games UTM plays, then its partners (white logos)
+  const items: LogoItem[] = [
+    ...Object.keys(games).map((id): LogoItem => ({
+      kind: "game",
+      id,
+      name: games[id],
+      logo: gameLogo?.[id],
+      short: gameShort?.[id],
+      live: teams.some((t) => t.game === id),
+    })),
+    ...(sponsors.some((sp) => sp.logoOnDark ?? sp.logo)
+      ? [...sponsors.filter((sp) => sp.logoOnDark ?? sp.logo).map((sp): LogoItem => ({ kind: "partner", name: sp.name, logo: (sp.logoOnDark ?? sp.logo) as string, url: sp.url }))]
+      : []),
+  ];
 
   return (
     <section
@@ -27,7 +42,7 @@ export function HeroMark() {
         className="hero-slide pointer-events-none absolute bottom-0 right-0 w-[190%] max-w-none translate-x-[47%] translate-y-[8%] md:bottom-auto md:right-[-4%] md:top-1/2 md:h-[106%] md:w-auto md:translate-x-0 md:-translate-y-1/2"
       />
 
-      <div className={`${wrap} relative z-10 flex flex-1 flex-col justify-center py-12 md:py-20`}>
+      <div className={`${wrap} relative z-10 flex w-full flex-1 flex-col items-start justify-center py-12 md:py-20`}>
         <h1
           id="hero-title"
           className="hero-rise font-display text-[clamp(3.25rem,9vw,6rem)] font-extrabold italic uppercase leading-[0.95] tracking-[-0.02em]"
@@ -58,25 +73,11 @@ export function HeroMark() {
         </div>
       </div>
 
-      <nav aria-label="Games" className="relative z-10 border-t-[3px] border-track bg-ink">
-        <ul className={`${wrap} flex flex-wrap items-center gap-x-6 gap-y-0 md:gap-x-8`}>
-          {Object.keys(games).map((id) => {
-            const live = teams.some((t) => t.game === id);
-            return (
-              <li key={id}>
-                <Link
-                  href={`/teams/${id}`}
-                  aria-label={games[id]}
-                  data-track={`hero_game_${id}`}
-                  className={`inline-flex min-h-11 items-center font-display text-lg font-bold italic uppercase leading-none hover:underline hover:decoration-2 hover:underline-offset-8 ${live ? "text-white" : "text-white/70"}`}
-                >
-                  {gameShort?.[id] ?? games[id]}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      <div className="relative z-10 border-t-[3px] border-track bg-ink pb-[calc(var(--rise)+4.5rem)] md:pb-[var(--rise)]">
+        <div className="py-3">
+          <LogoCarousel items={items} />
+        </div>
+      </div>
     </section>
   );
 }

@@ -38,7 +38,7 @@ export default async function ResultPage({ params }: { params: Promise<{ slug: s
       <Nav />
       <main className="on-dark tex-dark relative bg-ink pb-24 pt-10 text-white md:pt-14">
         <div className={wrap}>
-          <BackButton fallback="/#results" />
+          <BackButton fallback="/results" />
           <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
             <span
               className={`block px-5 py-1.5 font-display text-xl font-extrabold italic uppercase leading-none ${champion ? "bg-track text-white" : "bg-white text-ink"}`}
@@ -60,7 +60,7 @@ export default async function ResultPage({ params }: { params: Promise<{ slug: s
             alt={a.imageAlt ?? a.event}
             width={1000}
             height={1000}
-            className="mx-auto mt-10 h-auto max-h-[80vh] w-auto max-w-full bg-[#12080a]"
+            className="mx-auto mt-10 h-auto max-h-[80vh] w-auto max-w-full bg-well"
           />
         </div>
       </main>
