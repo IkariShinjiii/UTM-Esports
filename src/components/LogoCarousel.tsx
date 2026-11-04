@@ -116,7 +116,7 @@ export function LogoCarousel({ items }: { items: LogoItem[] }) {
       role="group"
       aria-roledescription="carousel"
       aria-label="Games we play and our partners"
-      className={`relative ${reduced ? "overflow-x-auto" : "overflow-hidden"}`}
+      className={`relative py-[calc(var(--rise)/2+0.5rem)] ${reduced ? "overflow-x-auto overflow-y-hidden" : "overflow-hidden"}`}
       onMouseEnter={() => slow(0)}
       onMouseLeave={() => slow(1)}
       onFocus={() => slow(0)}
@@ -125,12 +125,15 @@ export function LogoCarousel({ items }: { items: LogoItem[] }) {
       onTouchEnd={() => slow(1)}
       onTouchCancel={() => slow(1)}
     >
+      {/* The row is tilted at the angle of the section edge under it, so the logos slide up along that line */}
+      <div className="[rotate:calc(atan2(var(--rise),100vw)*-1)]">
       <div ref={track} className="flex w-max will-change-transform">
         {[0, 1].map((copy) => (
           <ul key={copy} aria-hidden={copy === 1 || undefined} {...(copy === 1 ? { inert: true } : {})} className="flex shrink-0 items-center">
             {group.map((it, i) => render(it, i, copy === 0 && i < items.length))}
           </ul>
         ))}
+      </div>
       </div>
       <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-[linear-gradient(to_right,#16090a,transparent)] md:w-28" />
       {/* Invisible until it is reached with the keyboard: then it shows, so the loop can be stopped */}
