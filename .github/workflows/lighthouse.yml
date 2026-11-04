@@ -1,0 +1,45 @@
+name: Lighthouse
+
+# Builds the site and runs Lighthouse on the main pages of every pull request.
+# Accessibility and SEO must stay at 95 or more (the job fails if they drop). Performance, best practices,
+# layout shift and page weight only warn. This job is not a required check, so a warning never blocks a merge.
+# The full reports are attached to the run as an artifact (download "lighthouse-reports").
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run Lighthouse
+        run: npx --yes @lhci/cli@0.14.0 autorun
+
+      - name: Keep the reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          if-no-files-found: ignore
