@@ -28,6 +28,7 @@ The site has one job: turn visitors from Facebook, Instagram and TikTok into **D
 | --- | --- |
 | Framework | Next.js 15 (App Router), static export (`output: "export"`) |
 | UI | React 19, TypeScript, Tailwind CSS 4 |
+| Motion | GSAP (picture shuffle, logo bar, menus) and plain CSS animation |
 | Fonts | Kanit (display) and Barlow (text), through `next/font` |
 | Hosting | Vercel |
 | CI | GitHub Actions |
@@ -65,27 +66,41 @@ Run `npm run lint`, `npx tsc --noEmit` and `npm run build` before opening a pull
 
 ```
 src/
-  app/
-    page.tsx              Home page: the sections in order
-    about/                About page (mission, vision, story)
-    teams/[game]/         One page per game
-    results/[slug]/       One page per result (poster or certificate)
-    layout.tsx            Fonts, metadata
-    globals.css           Colours, textures, animations
+  app/                      One folder per page
+    page.tsx                Home page: the sections in order
+    about/                  Mission, vision and story
+    ceo/                    The CEO's page
+    organization/           The org chart
+    results/                All results, and results/[slug] for one poster or certificate
+    highlights/             The photo gallery
+    merch/                  Jerseys and merch
+    teams/[game]/           One page per game
+    layout.tsx              Fonts and site metadata
+    globals.css             Colours, textures, animations
   components/
-    HeroMark.tsx          The hero page (the dragon)
-    Hero.tsx              The picture shuffle section under it
-    HeroSlides.tsx        The picture shuffle itself
-    Nav.tsx               Top bar and phone menu
-    Sections.tsx          Results, Join, Teams, Highlights, Community, Partners, FAQ, Footer
-    NextEvent.tsx         Next event with a countdown
-    StickyDiscord.tsx     Discord button fixed to the bottom on phones
+    Nav.tsx                 Top bar, the More menu (opens on hover) and the phone menu
+    HeroMark.tsx            The hero page: the dragon (floating mane, blinking eye) and the logo bar
+    LogoCarousel.tsx        The drifting bar of game and partner logos
+    Hero.tsx                The picture shuffle section further down the home page
+    HeroSlides.tsx          The picture shuffle itself
+    Sections.tsx            Results, Join, Teams, Highlights, Community, Partners, FAQ, Footer
+    NextEvent.tsx           Next event with a countdown
+    TeamGrid.tsx            The game tiles
+    OrgChart.tsx            The org chart
+    MerchCard.tsx           A merch item
+    FaqList.tsx             The FAQ
+    SkelImg.tsx             A picture with a loading skeleton behind it
+    Reveal.tsx, useReveal.ts  Slow reveal as sections scroll into view
+    StickyDiscord.tsx       Discord button fixed to the bottom on phones
   content/
-    site.ts               All the content (edit this one)
-    types.ts              The shape of that content
-public/images/            Photos, award posters, jerseys, game art, logos
-.github/workflows/        CI
+    site.ts                 All the content (edit this one)
+    types.ts                The shape of that content
+public/images/              Photos, award posters, jerseys, merch, game art, partner logos, the dragon layers
+.github/workflows/          CI
 ```
+
+The home page runs in this order: hero (dragon), results, join, teams, next event, picture shuffle, highlights,
+community, partners, FAQ, footer.
 
 ---
 
@@ -96,13 +111,16 @@ Everything the org edits lives in one typed file: [`src/content/site.ts`](src/co
 | Section | What it holds |
 | --- | --- |
 | `settings` | Links (Discord, forms, socials), contact email, whether tryouts are open |
-| `heroSlides` | Pictures in the hero picture shuffle |
+| `heroSlides` | Pictures in the picture shuffle |
 | `about` | Story, mission, vision and the tryout steps |
-| `moments`, `faq` | Photo moments and the FAQ |
+| `ceo`, `org` | The CEO page and the org chart |
+| `moments`, `moreMoments` | Photos on the home page, and the extra ones on the Highlights page |
+| `faq` | The FAQ |
 | `games`, `teams` | The games the club plays and its teams. Add a game by adding entries, not code |
 | `achievements` | Results, newest shown first. Each can have a poster or certificate image |
 | `events` | The next event (drives the countdown) |
-| `sponsors`, `merch` | Partner logos and merch |
+| `sponsors` | Partner logos |
+| `merch` | Merch items. Price and order link are optional: the page says "coming soon" until they are set |
 
 **Images** go in `public/images/`. Use `.webp`, keep them as small as you can, and keep the first load of the page under 1 MB.
 
@@ -125,7 +143,9 @@ Merging to `main` deploys to production automatically.
 ### Quality bar
 
 - First load under 1 MB, not counting video
-- WCAG 2.2 AA, visible keyboard focus, reduced motion respected
+- WCAG 2.2 AA, visible keyboard focus
+- Reduced motion respected: anything that moves on its own must stop (or never start) when the visitor asks for less motion
+- Pictures that load late use `SkelImg`, so slow connections see a placeholder, not a gap
 - Mobile first: most visitors are students on phones
 - Show only real things: real photos, players and results. Do not invent sponsors, events or placements
 
@@ -163,6 +183,7 @@ Vercel refuses to deploy a vulnerable Next.js version, so keep `next` up to date
 - Analytics: buttons already carry `data-track` names, but no analytics script is installed yet
 - Link previews and favicon: no Open Graph image, sitemap or robots file yet, and the favicon is still the Next.js default
 - A custom domain
+- The Pause buttons on the picture shuffle and the logo bar only show for keyboard users
 - `DESIGN.md` still describes slanted boxes, but the site now renders plain rectangles
 
 ---
