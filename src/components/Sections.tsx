@@ -5,6 +5,7 @@ import { resultSlug } from "@/content/slug";
 import { ClipTile } from "./ClipTile";
 import { TeamGrid, type TeamTile } from "./TeamGrid";
 import { Reveal } from "./Reveal";
+import { SkelImg } from "./SkelImg";
 import { SocialIcon } from "./SocialIcon";
 
 export const wrap = "mx-auto max-w-[90rem] px-6 md:px-12";
@@ -66,8 +67,7 @@ export function ResultCard({ a, className = "" }: { a: Achievement; className?: 
       <div className="relative aspect-square bg-well">
         {a.image ? (
           <Link href={`/results/${resultSlug(a)}`} data-track="result_open" className="block h-full w-full">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <SkelImg
               src={thumbOf(a.image)}
               alt={a.imageAlt ?? a.event}
               loading="lazy"
@@ -260,8 +260,7 @@ export function Mosaic({ items }: { items: Moment[] }) {
               {m.videoUrl ? (
                 <ClipTile m={m} />
               ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <SkelImg
                   src={m.image}
                   alt={m.alt}
                   loading="lazy"

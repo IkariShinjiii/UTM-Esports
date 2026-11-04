@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BackButton } from "@/components/BackButton";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
+import { SkelImg } from "@/components/SkelImg";
 import { Footer, btnInk, h2, wrap } from "@/components/Sections";
 import { StickyDiscord } from "@/components/StickyDiscord";
 import { content } from "@/content/site";
@@ -31,8 +32,7 @@ export default function CeoPage() {
         <section aria-labelledby="ceo-name" className="tex-light slab ghost relative bg-white [--gpos:100%_50%]">
           <Reveal className={`${wrap} grid items-start gap-12 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-20`}>
             {/* The whole photo, never cropped */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <SkelImg
               src={ceo.photo}
               alt={ceo.photoAlt}
               width={900}

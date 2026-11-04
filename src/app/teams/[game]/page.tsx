@@ -4,6 +4,7 @@ import { BackButton } from "@/components/BackButton";
 import { Nav } from "@/components/Nav";
 import { Footer, btnRed, btnWhite, wrap } from "@/components/Sections";
 import { Reveal } from "@/components/Reveal";
+import { SkelImg } from "@/components/SkelImg";
 import { StickyDiscord } from "@/components/StickyDiscord";
 import { content } from "@/content/site";
 
@@ -99,8 +100,7 @@ export default async function GamePage({ params }: { params: Promise<{ game: str
                         <li key={pl.ign} className="bg-card p-3 pb-5 text-white md:p-4 md:pb-6">
                           <div className="relative aspect-square overflow-hidden bg-well">
                             {pl.photo ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img src={pl.photo} alt={pl.ign} loading="lazy" className="h-full w-full object-cover" />
+                              <SkelImg src={pl.photo} alt={pl.ign} loading="lazy" className="h-full w-full object-cover" />
                             ) : (
                               <>
                                 <span

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Moment } from "@/content/types";
+import { SkelImg } from "./SkelImg";
 
 // A highlight: a photo, or a clip that only loads when a visitor taps play (keeps the page light).
 export function ClipTile({ m }: { m: Moment }) {
@@ -21,8 +22,7 @@ export function ClipTile({ m }: { m: Moment }) {
   }
 
   const img = (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <SkelImg
       src={m.image}
       alt={m.alt}
       loading="lazy"
