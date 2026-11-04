@@ -165,7 +165,9 @@ Plain rectangles. No rounded corners, no skew, no clip-paths on boxes. Section t
 Ink rectangles with the character art fading in from the right. On hover or focus a red panel sweeps in from the left behind the text and art, and sweeps out to the right on leave (GSAP, moving by position so quick in-and-out never jumps).
 
 ### Hero dragon
-The mark is cut into three stacked layers (head, mane, flame tips) plus a small ink patch over the eye cut-out, all made from the one silhouette so that at rest they add up to the original (checked to within 2 of 255 on any pixel). The layers are cut through empty gaps and solid dark areas, never through a flame, and fade into each other only where there is solid ink. The files are `dragon-head`, `dragon-mane`, `dragon-tips` and `dragon-eye` in `public/images/`. If the mark is ever redrawn, the layers must be cut again.
+Sized to the area above the logo bar, so the whole head, the jaw and mouth, and the mane show and the bar never cuts it off. On phones it sits at the bottom right with the face below the Join button.
+
+The mark is cut by `scripts/cut-dragon.mjs` into a head and a mane of six horizontal strips, each strip a root piece and a tip piece (13 images, `dragon-head`, `dragon-m0r` to `dragon-m5t`, about 120 kB), plus the small ink patch `dragon-eye` over the eye cut-out. Every pixel's opacity is shared between the layers so that stacked they equal the original (checked to within 3 of 255) and so strips moving a little never leave a gap. The head and mane meet in the empty red gap beside the horn and in solid dark further down, never through a flame. The generated placement is in `src/components/dragonLayers.ts`. If the mark is ever redrawn, run the script again. The mouth is a cut-out in the silhouette, not a separate jaw, so it is not animated; a moving jaw needs the artwork redrawn with the jaw as its own piece.
 
 ### Logo bar
 Under the hero. A looping strip of the five game logos (each opens its page), a divider, then the partners in light versions (CDG Solutions, Nbrims, each linking out). Every logo has the same height and side space. It slows to a stop on hover, focus or touch-hold, and has a Pause button that appears only for keyboard users. With reduced motion it does not move: it becomes a row the visitor scrolls.
@@ -203,8 +205,13 @@ Blocks below the fold rise 32px and fade in over about 1.1 seconds when first sc
 
 Motion is on purpose and limited: the hero dragon, the picture shuffle, the logo bar, the tile wipe, the More menu drop, the loading skeleton and the scroll reveal. All of it uses transform and opacity (the eye blink uses a small clip), and all of it respects the reduced-motion setting.
 
-- **Hero dragon:** the whole mark floats up and down about 8px on a 7.5 second cycle with a tiny tilt. The mane sways about 1 degree from where it joins the head (5.6 seconds), and the outer flame tips sway a little more (about 1.5 degrees, 4.3 seconds) on top of that, like flying into the wind. The eye blinks every 6.4 seconds. The cycle lengths differ so the motion never repeats in step. It is meant to be felt more than seen.
-- **Reduced motion:** the dragon holds still, the picture shuffle starts paused, the logo bar becomes a scrollable row, the skeleton band stops, the menu drop is skipped, and the scroll reveal keeps only a plain fade.
+- **Hero dragon:** meant to be felt more than seen, like a flying dragon in a headwind.
+  - The whole mark drifts slowly (8.5 s) and breathes (4.8 s): the head rises and settles with a hair of scale.
+  - The mane ripples. Each of the six strips turns about 0.5 to 0.8 degrees about its root on its own beat and with its own head start or lag, and each tip turns about 1.2 degrees on a slightly different beat, so a wave runs through the flames and the tips trail their roots.
+  - About every 11 seconds a gust leans the whole mane back a touch (under 1 degree, a 1% stretch) and lets it go.
+  - The eye blinks at uneven moments on a 13.7 s cycle: a blink, a double blink, a blink. Closing is quicker than opening.
+  - Cycle lengths differ so the motion never repeats in step.
+- **Reduced motion:** the dragon holds still (every layer), the picture shuffle starts paused, the logo bar becomes a scrollable row, the skeleton band stops, the menu drop is skipped, and the scroll reveal keeps only a plain fade.
 - The shuffle and logo bar also pause on hover, focus and touch-hold, and offer a Pause button for keyboard users.
 
 ## Do's and Don'ts
@@ -223,5 +230,5 @@ Motion is on purpose and limited: the hero dragon, the picture shuffle, the logo
 - **Don't** use red for anything except championships, primary actions and the active item.
 - **Don't** crop a jersey graphic or a certificate.
 - **Don't** put the dragon over text, cards or buttons.
-- **Don't** make the dragon's motion bigger or faster; if it is noticed as an animation, it is too much.
+- **Don't** make the dragon's motion bigger or faster; if it is noticed as an animation, it is too much. Check any change at the real amplitudes, with neighbouring strips moving opposite ways, for cracks and stepped flames.
 - **Don't** invent results, sponsors, quotes or biographies. Leave a field out until it is real.

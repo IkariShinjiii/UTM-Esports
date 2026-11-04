@@ -82,7 +82,8 @@ src/
     globals.css             Colours, textures, animations
   components/
     Nav.tsx                 Top bar, the More menu (opens on hover) and the phone menu
-    HeroMark.tsx            The hero page: the dragon (floating mane, blinking eye) and the logo bar
+    HeroMark.tsx            The hero page: the dragon (breathing, rippling mane, blinking eye) and the logo bar
+    dragonLayers.ts         Where each dragon layer sits (generated, do not edit by hand)
     LogoCarousel.tsx        The drifting bar of game and partner logos
     Hero.tsx                The picture shuffle section further down the home page
     HeroSlides.tsx          The picture shuffle itself
@@ -99,6 +100,7 @@ src/
     site.ts                 All the content (edit this one)
     types.ts                The shape of that content
 public/images/              Photos, award posters, jerseys, merch, game art, partner logos, the dragon layers
+scripts/cut-dragon.mjs      Cuts the hero dragon into its animated layers (re-run if the artwork changes)
 .github/workflows/          CI
 ```
 
