@@ -7,9 +7,9 @@ import { SocialIcon } from "./SocialIcon";
 // the headline and its mane running off the screen. One headline, one button, and a bar naming the games,
 // each opening that game's page. The nav is 75px tall, so the hero fills what is left under it.
 export function HeroMark() {
-  const { settings, games, gameShort, gameLogo, teams, sponsors } = content;
+  const { settings, games, gameShort, gameLogo, teams } = content;
 
-  // The bar under the hero: the games UTM plays, then its partners (white logos)
+  // The bar under the hero: the games UTM plays (the partners are in the Partners section)
   const items: LogoItem[] = [
     ...Object.keys(games).map((id): LogoItem => ({
       kind: "game",
@@ -19,9 +19,6 @@ export function HeroMark() {
       short: gameShort?.[id],
       live: teams.some((t) => t.game === id),
     })),
-    ...(sponsors.some((sp) => sp.logoOnDark ?? sp.logo)
-      ? [...sponsors.filter((sp) => sp.logoOnDark ?? sp.logo).map((sp): LogoItem => ({ kind: "partner", name: sp.name, logo: (sp.logoOnDark ?? sp.logo) as string, url: sp.url }))]
-      : []),
   ];
 
   return (
@@ -73,10 +70,8 @@ export function HeroMark() {
         </div>
       </div>
 
-      <div className="relative z-10 border-t-[3px] border-track bg-ink pb-[calc(var(--rise)+4.5rem)] md:pb-[var(--rise)]">
-        <div className="py-3">
-          <LogoCarousel items={items} />
-        </div>
+      <div className="relative z-10 border-t-[3px] border-track bg-ink pb-[4.5rem] md:pb-0">
+        <LogoCarousel items={items} />
       </div>
     </section>
   );
