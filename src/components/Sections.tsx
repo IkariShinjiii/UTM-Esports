@@ -491,7 +491,7 @@ export function Footer() {
         <Reveal className={`${wrap} pt-12`}>
           <div className="flex flex-col gap-6 border-b border-white/25 pb-12 md:flex-row md:items-center md:justify-between">
             <p className="font-display text-[clamp(1.75rem,3.4vw,2.5rem)] font-extrabold italic uppercase leading-[1]">
-              Ready to play? Join the roster.
+              Ready to play? Join us.
             </p>
             <a href={settings.discordInvite} data-track="discord_footer" className={btnWhite + " self-start"}>
               Join the Discord

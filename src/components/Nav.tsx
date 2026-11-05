@@ -129,7 +129,7 @@ export function Nav() {
     }`;
 
   return (
-    <header className="on-dark sticky top-0 z-50 border-b-[3px] border-track bg-ink text-white">
+    <header className="on-dark sticky top-0 z-50 bg-ink text-white">
       {/* For keyboard users: the first Tab stop on every page, so the menu can be skipped */}
       <a
         href="#content"

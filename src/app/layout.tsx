@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Barlow, Kanit } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { NavHistory } from "@/components/NavHistory";
+import { ScrollProgress } from "@/components/ScrollProgress";
 import { content } from "@/content/site";
 import "./globals.css";
 
@@ -51,6 +52,7 @@ export default function RootLayout({
       <body className={`${sans.variable} ${display.variable} antialiased`}>
         {children}
         <NavHistory />
+        <ScrollProgress />
         <Analytics />
       </body>
     </html>

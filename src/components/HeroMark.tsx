@@ -115,7 +115,7 @@ export function HeroMark() {
         </div>
       </div>
 
-      <div className="relative z-10 border-t-[3px] border-track bg-ink pb-[4.5rem] md:pb-0">
+      <div className="relative z-10 border-t-[3px] border-track bg-ink pb-[calc(4.5rem+var(--rise)*0.4)] md:pb-[calc(var(--rise)*0.4)]">
         <LogoCarousel items={items} />
       </div>
     </section>

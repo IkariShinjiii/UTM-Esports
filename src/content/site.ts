@@ -79,7 +79,7 @@ export const content: SiteContent = {
       { title: "Brand ambassadors", names: ["Noreen", "Marco"] },
       { title: "Streamer", names: [{ name: "Liaaa", tiktok: "https://www.tiktok.com/@aireekatee" }] },
     ],
-    division: { title: "MLBB Division", subtitle: "UTM Synctron", names: ["Kiyoshi", "Dick Grayson", "Baa Baa Black Reense", "Kaitoo"] },
+    division: { title: "MLBB Division", subtitle: "UTM Synctron", names: ["Kiyoshi", "Dick Grayson", "Baa Baa Black Reense", "Kaitoo", "Uhmm idk"] },
   },
   // Highlights: photos from the club's own camera rolls. Captions say only what the picture shows and the month it
   // was taken (from the file name), so nothing here claims a result or an event.
@@ -286,6 +286,7 @@ export const content: SiteContent = {
         { ign: "Dick Grayson" },
         { ign: "Baa Baa Black Reense" },
         { ign: "Kaitoo" },
+        { ign: "Uhmm idk" },
       ],
     },
   ],
