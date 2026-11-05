@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Barlow, Kanit } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { NavHistory } from "@/components/NavHistory";
+import { Preloader, introGuard } from "@/components/Preloader";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { content } from "@/content/site";
 import "./globals.css";
@@ -48,8 +49,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${sans.variable} ${display.variable} antialiased`}>
+        <script dangerouslySetInnerHTML={{ __html: introGuard }} />
+        <noscript><style>{".preloader{display:none}"}</style></noscript>
+        <Preloader />
         {children}
         <NavHistory />
         <ScrollProgress />
