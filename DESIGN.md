@@ -99,7 +99,7 @@ One red family from the logo's gradient, a warm near-black with two darker plate
 
 ### Primary
 - **Flame Red** (#e4181e): the bright end of the field gradient.
-- **Track Red** (#d4232b): the working red. Text and buttons on white, countdown cells, the champion tag, `h3` accents, focus ring, text selection, scrollbar thumb.
+- **Track Red** (#d4232b): the working red. Text and buttons on white, countdown cells, the champion tag, `h3` accents, focus ring, text selection, the scroll progress bar at the top of the window.
 - **Cut Red** (#b3151b): the gradient midpoint; exists only inside the field.
 - **Crimson** (#6b0f12): the deep end of the field gradient.
 
@@ -108,7 +108,7 @@ One red family from the logo's gradient, a warm near-black with two darker plate
 - **Card Ink** (#241214): a card or plate on an ink slab (result cards, player cards, org boxes). Token `card`.
 - **Well Ink** (#12080a): the dark well a poster or photo sits in. Token `well`.
 - **Slash White** (#ffffff): light slabs, the primary button, text on red and ink.
-- **Blush** (#f3ebe8): the scrollbar track and the hover fill of the More menu. Token `blush`.
+- **Blush** (#f3ebe8): the hover fill of the More menu (the page scrollbar is hidden; a 3px progress bar replaces it). Token `blush`.
 
 ### Named Rules
 **The One Gradient Rule.** The red field is a 135 degree gradient, Crimson 0%, Cut Red 45%, Flame Red 100%. It appears only as `.field`. Never on a card or a button.

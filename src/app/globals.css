@@ -25,7 +25,21 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
   scroll-padding-bottom: 5rem;
-  scrollbar-color: var(--color-track) var(--color-blush);
+  scrollbar-width: none; /* the page scrollbar is replaced by the progress bar at the top */
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  height: 3px;
+  background: var(--color-red, #d4232b);
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+  pointer-events: none;
 }
 
 body {
