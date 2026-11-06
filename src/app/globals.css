@@ -416,3 +416,86 @@ body {
 p {
   text-wrap: pretty;
 }
+
+/* First-visit intro (src/components/Preloader.tsx) */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(60% 50% at 50% 50%, #2a1214 0%, var(--color-ink) 70%);
+  animation: preloader-failsafe 0s 9s forwards; /* never trap the page if scripts fail */
+}
+@keyframes preloader-failsafe {
+  to { visibility: hidden; }
+}
+html[data-intro="skip"] .preloader {
+  display: none;
+}
+.preloader__logo {
+  position: fixed;
+  z-index: 101;
+  pointer-events: none;
+}
+.preloader__mark {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: preloader-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.preloader__shine {
+  position: absolute;
+  inset: 0;
+  -webkit-mask: url(/images/utm-logo-white.png) center / contain no-repeat;
+  mask: url(/images/utm-logo-white.png) center / contain no-repeat;
+  background: linear-gradient(105deg, transparent 28%, rgba(255, 255, 255, 0.12) 38%, rgba(212, 35, 43, 0.9) 47%, rgba(255, 255, 255, 0.95) 50%, rgba(212, 35, 43, 0.9) 53%, rgba(255, 255, 255, 0.12) 62%, transparent 72%);
+  background-size: 300% 100%;
+  background-position: 140% 0;
+  animation: preloader-shine 1.2s cubic-bezier(0.37, 0, 0.63, 1) 0.25s both;
+}
+@keyframes preloader-rise {
+  0% { opacity: 0; transform: translateY(24px); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes preloader-shine {
+  0% { background-position: 140% 0; }
+  to { background-position: -40% 0; }
+}
+.preloader__fire {
+  position: fixed;
+  z-index: 100;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.preloader__core {
+  position: absolute;
+  left: -1.4rem;
+  top: -1.4rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff6c8 0%, #ffc83c 35%, rgba(255, 104, 28, 0.5) 65%, rgba(255, 104, 28, 0) 100%);
+  opacity: 0;
+}
+.preloader__puff {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 246, 200, 0.95) 0%, rgba(255, 200, 60, 0.8) 18%, rgba(255, 104, 28, 0.5) 42%, rgba(212, 35, 43, 0.2) 68%, rgba(212, 35, 43, 0) 100%);
+  will-change: transform, opacity;
+}
+/* While the intro plays: hold the hero's entrance and keep the nav logo hidden until the flying copy lands */
+.is-loading .hero-rise {
+  animation-play-state: paused;
+}
+.logo-pending header a > img {
+  opacity: 0;
+}
+header a > img {
+  transition: opacity 0.45s ease;
+}
