@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
-const MIN_MS = 1400; // the dragon breathes fire for at least this long
+const MIN_MS = 1900; // the dragon breathes fire for at least this long
 const FLY = 1.5; // seconds the logo takes to travel into the nav
 
 export const INTRO_KEY = "utm-intro-seen";
