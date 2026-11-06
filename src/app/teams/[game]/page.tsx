@@ -96,9 +96,15 @@ export default async function GamePage({ params }: { params: Promise<{ game: str
                     >
                       {team.name}
                     </h2>
-                    <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+                    <ul className="mt-10 flex flex-wrap justify-center gap-3 md:gap-4">
                       {team.players.map((pl) => (
-                        <li key={pl.ign} className="bg-card p-3 pb-5 text-white md:p-4 md:pb-6">
+                        <li
+                          key={pl.ign}
+                          className={`w-[calc((100%-0.75rem)/2)] bg-card p-3 pb-5 text-white md:w-[calc((100%-2rem)/3)] md:p-4 md:pb-6 ${
+                            // avoid a lone card on the last row: 5 players sit 3 + 2 instead of 4 + 1
+                            team.players.length % 4 === 1 ? "" : "lg:w-[calc((100%-3rem)/4)]"
+                          }`}
+                        >
                           <div className="relative aspect-square overflow-hidden bg-well">
                             {pl.photo ? (
                               <SkelImg src={pl.photo} alt={pl.ign} loading="lazy" className="h-full w-full object-cover" />
