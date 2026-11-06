@@ -94,19 +94,20 @@ export function Preloader() {
     const unit = slot.current?.getBoundingClientRect().width ?? 150; // fire scales with the logo
     const puffs = Array.from(wrap.querySelectorAll<HTMLElement>("[data-puff]"));
     const ctx = gsap.context(() => {
-      gsap.set(puffs, { autoAlpha: 0, xPercent: -50, yPercent: -50, width: unit * 0.26, height: unit * 0.2 });
+      gsap.set(puffs, { autoAlpha: 0, xPercent: -50, yPercent: -50, width: unit * 0.26, height: unit * 0.2, force3D: true });
+      // each puff keeps one fixed colour (yellow to red); animating a filter on every puff was too heavy for phones
+      puffs.forEach((el) => { el.style.filter = `hue-rotate(${-gsap.utils.random(0, 26)}deg)`; });
       puffs.forEach((el, i) => {
         // The flame leaves the open jaw heading left and a little down (the mouth opens down-left)
         const dist = unit * gsap.utils.random(0.8, 2.1);
         const life = gsap.utils.random(0.65, 1.05);
         const delay = 0.3 + (i / puffs.length) * 0.7; // the breath builds: puffs start one after another
         const angle = () => gsap.utils.random(12, 34) * (Math.PI / 180);
-        gsap.fromTo(el, { x: 0, y: 0, scale: 0.4, scaleX: 0.8, filter: "hue-rotate(0deg) brightness(1.15)" }, {
+        gsap.fromTo(el, { x: 0, y: 0, scale: 0.4, scaleX: 0.8 }, {
           x: () => -dist * Math.cos(angle()),
           y: () => dist * 0.6 * Math.sin(angle()) - unit * gsap.utils.random(0, 0.1),
           scale: () => gsap.utils.random(1.2, 2),
           scaleX: () => gsap.utils.random(1.6, 2.6),
-          filter: "hue-rotate(-24deg) brightness(0.8)",
           duration: life, ease: "none", repeat: -1, repeatRefresh: true, delay,
         });
         gsap.to(el, { keyframes: [{ autoAlpha: 1, duration: life * 0.1, ease: "none" }, { autoAlpha: 0, duration: life * 0.9, ease: "power1.in" }], repeat: -1, delay });
@@ -131,7 +132,7 @@ export function Preloader() {
       {rect && (
         <div ref={fireWrap} aria-hidden="true" className="preloader__fire" style={{ left: rect.left + rect.width * 0.1, top: rect.top + rect.height * 0.665 }}>
           <span data-core className="preloader__core" />
-          {Array.from({ length: 70 }, (_, i) => <span key={i} data-puff className="preloader__puff" />)}
+          {Array.from({ length: 40 }, (_, i) => <span key={i} data-puff className="preloader__puff" />)}
         </div>
       )}
       {rect && (
