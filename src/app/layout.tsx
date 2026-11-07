@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Kanit } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
-import { NavHistory } from "@/components/NavHistory";
 import { Preloader, introGuard } from "@/components/Preloader";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { content } from "@/content/site";
@@ -55,7 +54,6 @@ export default function RootLayout({
         <noscript><style>{".preloader{display:none}"}</style></noscript>
         <Preloader />
         {children}
-        <NavHistory />
         <ScrollProgress />
         <Analytics />
       </body>
