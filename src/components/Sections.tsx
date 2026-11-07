@@ -67,7 +67,7 @@ export function ResultCard({ a, className = "" }: { a: Achievement; className?: 
       </div>
       <div className="relative aspect-square bg-well">
         {a.image ? (
-          <Link href={`/results/${resultSlug(a)}`} data-track="result_open" className="block h-full w-full">
+          <Link href={`/results/${resultSlug(a)}`} prefetch={false} data-track="result_open" className="block h-full w-full">
             <SkelImg
               src={thumbOf(a.image)}
               alt={a.imageAlt ?? a.event}

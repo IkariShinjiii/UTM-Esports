@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
 const MIN_MS = 2200; // the intro shows for at least this long
@@ -17,22 +17,9 @@ export const introGuard = `try{var d=document.documentElement,p=new URLSearchPar
 // visit (add ?intro to the address to see it again) and is skipped for reduced motion.
 export function Preloader() {
   const [status, setStatus] = useState<"run" | "done">("run");
-  const [rect, setRect] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const screen = useRef<HTMLDivElement>(null);
-  const slot = useRef<HTMLDivElement>(null);
   const fly = useRef<HTMLDivElement>(null);
   const bar = useRef<HTMLDivElement>(null);
-
-  // Where the logo sits in the centred layout, so the flying copy can start exactly there
-  useLayoutEffect(() => {
-    const measure = () => {
-      const r = slot.current?.getBoundingClientRect();
-      if (r) setRect({ left: r.left, top: r.top, width: r.width, height: r.height });
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -87,33 +74,33 @@ export function Preloader() {
 
   // The loading bar fills under the logo while the page loads
   useEffect(() => {
-    if (!rect || !bar.current) return;
+    if (!bar.current) return;
     if (document.documentElement.getAttribute("data-intro") === "skip") return;
     const fill = bar.current.querySelector("[data-fill]");
     const tween = gsap.fromTo(fill, { scaleX: 0 }, { scaleX: 1, duration: 1.7, ease: "power2.inOut", delay: 0.35 });
     return () => { tween.kill(); };
-  }, [rect !== null]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   if (status === "done") return null;
+  // The logo is plain markup, positioned by CSS (see .preloader__logo), so it is painted with the first HTML and does not
+  // wait for scripts. The empty box in the screen only reserves its space so the bar sits below it.
   return (
     <>
       <div ref={screen} className="preloader" role="status" aria-label="Loading UTM Esports">
         <div className="text-center">
-          <div ref={slot} className="mx-auto" style={{ width: "clamp(6.5rem, 20vw, 9.5rem)", aspectRatio: "360 / 325" }} />
+          <div className="preloader__spacer mx-auto" />
           <div ref={bar} aria-hidden="true" className="preloader__bar">
             <div data-fill className="preloader__fill" />
           </div>
         </div>
       </div>
-      {rect && (
-        <div ref={fly} aria-hidden="true" className="preloader__logo" style={{ left: rect.left, top: rect.top, width: rect.width, height: rect.height, willChange: "transform" }}>
-          <div className="preloader__mark">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/utm-logo-white.png" alt="" className="size-full object-contain" />
-            <div className="preloader__shine" />
-          </div>
+      <div ref={fly} aria-hidden="true" className="preloader__logo" style={{ willChange: "transform" }}>
+        <div className="preloader__mark">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/utm-logo-white.png" alt="" width={360} height={325} fetchPriority="high" className="size-full object-contain" />
+          <div className="preloader__shine" />
         </div>
-      )}
+      </div>
     </>
   );
 }
