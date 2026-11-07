@@ -170,10 +170,10 @@ Sized to the area above the logo bar, so the whole head, the jaw and mouth, and 
 The mark is cut by `scripts/cut-dragon.mjs` into a head and a mane of six horizontal strips, each strip a root piece and a tip piece (13 images, `dragon-head`, `dragon-m0r` to `dragon-m5t`, about 120 kB), plus the small ink patch `dragon-eye` over the eye cut-out. Every pixel's opacity is shared between the layers so that stacked they equal the original (checked to within 3 of 255) and so strips moving a little never leave a gap. The head and mane meet in the empty red gap beside the horn and in solid dark further down, never through a flame. The generated placement is in `src/components/dragonLayers.ts`. If the mark is ever redrawn, run the script again. The mouth is a cut-out in the silhouette, not a separate jaw, so it is not animated; a moving jaw needs the artwork redrawn with the jaw as its own piece.
 
 ### Logo bar
-Under the hero. A looping strip of the five game logos (each opens its page), a divider, then the partners in light versions (CDG Solutions, Nbrims, each linking out). Every logo has the same height and side space. It slows to a stop on hover, focus or touch-hold, and has a Pause button that appears only for keyboard users. With reduced motion it does not move: it becomes a row the visitor scrolls.
+Under the hero. A looping strip of the five game logos (each opens its page), a divider, then the partners in light versions (CDG Solutions, Nbrims, each linking out). Every logo has the same height and side space. It slows to a stop on hover, focus or touch-hold, and has a visible Pause button (flat square, white icon) at its right edge. With reduced motion it does not move: it becomes a row the visitor scrolls.
 
 ### Picture shuffle
-Pictures swipe sideways on their own every 3 seconds (GSAP), with the photo gliding a little slower than its frame. They can be dragged. There is no visible pause button; a Pause button appears for keyboard users only. With reduced motion it starts paused and the dots change the picture without sliding.
+Pictures swipe sideways on their own every 3 seconds (GSAP), with the photo gliding a little slower than its frame. They can be dragged. A flat Pause button sits next to the dots. With reduced motion it starts paused and the dots change the picture without sliding.
 
 ### Loading skeleton
 A picture that loads late (below the fold) sits on a dark block with a slow light band passing over it (`SkelImg`, `.skeleton`), so a slow connection shows a placeholder, not a gap. The band holds still with reduced motion. Pictures that load with the page do not use it.
@@ -191,15 +191,15 @@ A checkered finish-line strip, a join bar, four link columns (Play, Watch, Conne
 Card Ink boxes joined by straight 3px lines: CEO (red title), admins, three groups side by side, then the MLBB division. People can carry a TikTok link.
 
 ### Back button and skip link
-The Back button goes back by the site's own history (`NavHistory` remembers the pages opened in this tab), so it returns to the page the visitor was on, with its scroll position, even when they arrived from another site. With no earlier page of ours it opens a sensible fallback (the home page, the section, or the Results list) without reloading. Every page starts with a "Skip to content" link, visible only when it takes keyboard focus, that jumps past the menu to the page's first block (`id="content"`).
+The Back button always goes to the landing page, or to the section of it the page belongs to (the Results list for a result, and so on), not to whatever page the visitor happened to open before. Every page starts with a "Skip to content" link, visible only when it takes keyboard focus, that jumps past the menu to the page's first block (`id="content"`).
 
 ### Icon and link preview
 The favicon is the dragon in white on the red field gradient, as a vector (`icon.svg`, with `apple-icon.png` and `favicon.ico` made from it). The link preview picture (1200 by 630) is the ink dragon on the field beside the logo and the motto.
 
 ### Textures
-- **tex-dark:** hexagon mesh plus film grain on ink slabs.
+- **tex-dark:** hexagon mesh plus film grain on ink slabs. The grain is a pre-rendered 128px tile (`grain-dark.webp`), because live SVG noise filters were the slowest thing on a phone.
 - **tex-red:** speed lines taken from the Crimson Cloudburst jersey graphic, plus grain, on the red field.
-- **tex-light:** a whisper of ink grain on white.
+- **tex-light:** a whisper of ink grain on white (`grain-white.webp`, same reason).
 
 ### Scroll reveal
 Blocks below the fold rise 32px and fade in over about 1.1 seconds when first scrolled into view; list items stagger. Anything on screen at load is never hidden, and with no JavaScript nothing is hidden.
@@ -215,11 +215,10 @@ Motion is on purpose and limited: the first-visit intro, the hero dragon, the pi
   - The eye blinks at uneven moments on a 13.7 s cycle: a blink, a double blink, a blink. Closing is quicker than opening.
   - Cycle lengths differ so the motion never repeats in step.
 - **First-visit intro (once per session, `?intro` replays it):** a warm-ink screen where the white logo rises in and a light sweeps across it. A flat Flame Red loading bar (a slanted slot, no glow) fills under it, then the logo flies up into the nav and the screen lifts away (GSAP, about 3.5 s).
-  - The fire follows the site's own rules: flat, hard-edged shapes in Cut Red, Flame Red and white, drawn like the flames in the logo's mane. No blur, no glow, no yellow or orange.
-  - Six blades fan out of the mouth, longest underneath, each made of three nested layers that flicker on their own beat. Each blade is one small element moved with transforms only.
+  - The logo is plain markup positioned by CSS, so it paints with the first HTML and does not wait for scripts. The bar is flat: no glow, no gradient, Flame Red on a faint Track Red slot.
   - It is skipped for reduced motion and for repeat visits in the same tab.
 - **Reduced motion:** the intro is skipped, the dragon holds still (every layer), the picture shuffle starts paused, the logo bar becomes a scrollable row, the skeleton band stops, the menu drop is skipped, and the scroll reveal keeps only a plain fade.
-- The shuffle and logo bar also pause on hover, focus and touch-hold, and offer a Pause button for keyboard users.
+- The shuffle and logo bar also pause on hover, focus and touch-hold, and each has a visible Pause button.
 
 ## Do's and Don'ts
 

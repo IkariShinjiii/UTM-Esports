@@ -26,11 +26,11 @@ The site has one job: turn visitors from Facebook, Instagram and TikTok into **D
 
 | Area | Choice |
 | --- | --- |
-| Framework | Next.js 15 (App Router), static export (`output: "export"`) |
+| Framework | Next.js 16 (App Router), static export (`output: "export"`) |
 | UI | React 19, TypeScript, Tailwind CSS 4 |
 | Motion | GSAP (picture shuffle, logo bar, menus) and plain CSS animation |
 | Fonts | Kanit (display) and Barlow (text), through `next/font` |
-| Hosting | Vercel |
+| Hosting | Vercel (security headers and a Content-Security-Policy in `vercel.json`) |
 | CI | GitHub Actions |
 | Node | 26.x (LTS) |
 
@@ -52,7 +52,7 @@ Open http://localhost:3000.
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Start the dev server |
-| `npm run build` | Production build (writes the static site to `out/`) |
+| `npm run build` | Production build (writes the static site to `out/`, then `scripts/csp-hash.mjs` adds the script hashes for the Content-Security-Policy) |
 | `npm run lint` | Run ESLint |
 | `npx tsc --noEmit` | Typecheck |
 
@@ -87,6 +87,11 @@ src/
     LogoCarousel.tsx        The drifting bar of game and partner logos
     Hero.tsx                The picture shuffle section further down the home page
     HeroSlides.tsx          The picture shuffle itself
+    PauseToggle.tsx         The Pause / Play button used by the picture shuffle and the logo bar
+    Preloader.tsx           The first-visit intro: logo, red loading bar, then the logo flies into the nav
+    BackButton.tsx          The Back button (always goes to the landing page or its section)
+    Analytics.tsx           Vercel Web Analytics plus click tracking from data-track attributes
+    ScrollProgress.tsx      The thin progress bar at the top
     Sections.tsx            Results, Join, Teams, Highlights, Community, Partners, FAQ, Footer
     NextEvent.tsx           Next event with a countdown
     TeamGrid.tsx            The game tiles
@@ -101,6 +106,7 @@ src/
     types.ts                The shape of that content
 public/images/              Photos, award posters, jerseys, merch, game art, partner logos, the dragon layers
 scripts/cut-dragon.mjs      Cuts the hero dragon into its animated layers (re-run if the artwork changes)
+scripts/csp-hash.mjs        Runs after the build: hashes every inline script and writes it into each page's Content-Security-Policy tag
 .github/workflows/          CI
 ```
 
@@ -188,11 +194,8 @@ Vercel refuses to deploy a vulnerable Next.js version, so keep `next` up to date
 - Real values for the `REPLACE_ME` placeholders in `site.ts`: the tryout form, the partner form, the contact email, the privacy page and the next event
 - The real tryout process and FAQ answers (the current text is a holding version)
 - Consent for the photos on the site, and privacy wording for applicants under 18 (Philippine Data Privacy Act, RA 10173)
-- Analytics: buttons already carry `data-track` names, but no analytics script is installed yet
-- Search files: no `robots.txt` or sitemap yet
+- Analytics: the script is installed; turn on Web Analytics for the project in the Vercel dashboard to see the numbers (custom click events need a plan that includes them)
 - A custom domain
-- The Pause buttons on the picture shuffle and the logo bar only show for keyboard users
-- `DESIGN.md` still describes slanted boxes, but the site now renders plain rectangles
 
 ---
 

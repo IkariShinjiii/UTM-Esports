@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { PauseToggle } from "./PauseToggle";
 
 export type LogoItem =
   | { kind: "game"; id: string; name: string; logo?: string; short?: string; live: boolean }
@@ -93,6 +94,7 @@ export function LogoCarousel({ items }: { items: LogoItem[] }) {
       <li key={`g-${it.id}-${i}`} className="px-8 md:px-12">
         <Link
           href={`/teams/${it.id}`}
+          prefetch={false}
           aria-label={it.name}
           data-track={`hero_game_${it.id}`}
           tabIndex={first ? undefined : -1}
@@ -136,15 +138,9 @@ export function LogoCarousel({ items }: { items: LogoItem[] }) {
       </div>
       </div>
       <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-[linear-gradient(to_right,#16090a,transparent)] md:w-28" />
-      {/* Invisible until it is reached with the keyboard: then it shows, so the loop can be stopped */}
-      <button
-        type="button"
-        onClick={toggle}
-        aria-pressed={stopped}
-        className="sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:right-3 focus-visible:top-1/2 focus-visible:z-10 focus-visible:-translate-y-1/2 focus-visible:bg-white focus-visible:px-4 focus-visible:py-3 focus-visible:text-sm focus-visible:font-bold focus-visible:uppercase focus-visible:tracking-wide focus-visible:text-ink"
-      >
-        {stopped ? "Play the logo bar" : "Pause the logo bar"}
-      </button>
+      {!reduced && (
+        <PauseToggle stopped={stopped} onToggle={toggle} label="the logo bar" track="hero_logobar_toggle" className="absolute right-2 top-1/2 z-10 -translate-y-1/2 bg-ink/70 md:right-4" />
+      )}
       <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-[linear-gradient(to_left,#16090a,transparent)] md:w-28" />
     </div>
   );

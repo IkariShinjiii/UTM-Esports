@@ -41,6 +41,7 @@ export function TeamGrid({ tiles }: { tiles: TeamTile[] }) {
           <Reveal as="li" key={g.id} delay={(i % 2) * 120} className="md:[&:last-child:nth-child(odd)]:col-span-2">
             <Link
               href={`/teams/${g.id}`}
+              prefetch={false}
               data-track={`team_${g.id}`}
               onMouseEnter={() => wipeIn(g.id)}
               onMouseLeave={() => wipeOut(g.id)}

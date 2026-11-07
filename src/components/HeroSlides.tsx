@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import type { HeroSlide } from "@/content/types";
+import { PauseToggle } from "./PauseToggle";
 
 const INTERVAL_MS = 3000;
 
@@ -18,7 +19,7 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
   const [loaded, setLoaded] = useState(1); // how many pictures have been asked to load, in order
   const [near, setNear] = useState(false); // the shuffle is close to the screen: only then do the other pictures load
   const [paused, setPaused] = useState(false); // a finger or the keyboard is on it: temporary
-  const [stopped, setStopped] = useState(false); // chosen with the keyboard-only Pause button
+  const [stopped, setStopped] = useState(false); // chosen with the Pause button
   const [drag, setDrag] = useState(0); // px the picture is being dragged
   const frame = useRef<HTMLDivElement>(null);
   const slideEls = useRef<(HTMLDivElement | null)[]>([]);
@@ -207,16 +208,7 @@ export function HeroSlides({ slides }: { slides: HeroSlide[] }) {
               </li>
             ))}
           </ul>
-          {/* Invisible until it is reached with the keyboard: then it shows, so the shuffle can be stopped */}
-          <button
-            type="button"
-            onClick={() => setStopped((v) => !v)}
-            aria-pressed={stopped}
-            data-track="hero_shuffle_toggle"
-            className="sr-only focus-visible:not-sr-only focus-visible:ml-3 focus-visible:grid focus-visible:h-11 focus-visible:place-items-center focus-visible:border-2 focus-visible:border-white focus-visible:px-4 focus-visible:text-sm focus-visible:font-bold focus-visible:uppercase focus-visible:tracking-wide"
-          >
-            {stopped ? "Play the picture shuffle" : "Pause the picture shuffle"}
-          </button>
+          <PauseToggle stopped={stopped} onToggle={() => setStopped((v) => !v)} label="the picture shuffle" track="hero_shuffle_toggle" className="ml-2" />
         </div>
       )}
     </div>
