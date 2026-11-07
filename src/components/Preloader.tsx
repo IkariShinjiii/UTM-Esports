@@ -3,8 +3,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
-const MIN_MS = 2000; // the dragon breathes fire for at least this long
-const FLY = 2.6; // seconds the logo takes to travel into the nav
+const MIN_MS = 2200; // the dragon breathes fire for at least this long
+const FLY = 1.5; // seconds the logo takes to travel into the nav
 
 export const INTRO_KEY = "utm-intro-seen";
 
@@ -53,11 +53,12 @@ export function Preloader() {
     html.style.overflow = "hidden";
     let dead = false;
     let tl: gsap.core.Timeline | undefined;
-    const minimum = new Promise((r) => setTimeout(r, MIN_MS));
+    // counted from when the page started loading, so a slow connection does not add the delay on top
+    const minimum = new Promise((r) => setTimeout(r, Math.max(0, MIN_MS - performance.now())));
     const loaded = new Promise<void>((r) => {
       if (document.readyState === "complete") r();
       else window.addEventListener("load", () => r(), { once: true });
-      setTimeout(r, 3000);
+      setTimeout(r, 1500); // never hold the visitor for slow images
     });
     Promise.all([minimum, loaded]).then(() => {
       if (dead || !fly.current || !screen.current) return;
@@ -70,7 +71,7 @@ export function Preloader() {
       tl = gsap.timeline({ onComplete: finish });
       tl.to(fireWrap.current, { autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 0)
         .to(fly.current, { x: dx, y: dy, scale, duration: FLY, ease: "power3.inOut" }, 0.3)
-        .to(screen.current, { yPercent: -100, duration: FLY * 0.85, ease: "power3.inOut" }, 0.7)
+        .to(screen.current, { yPercent: -100, duration: FLY * 0.75, ease: "power3.inOut" }, 0.7)
         .add(() => { html.classList.remove("is-loading"); html.style.overflow = ""; }, 1.1)
         .add(() => html.classList.remove("logo-pending"), end - 0.15)
         .to(fly.current, { autoAlpha: 0, duration: 0.35, ease: "none" }, end);
@@ -93,26 +94,27 @@ export function Preloader() {
     const unit = slot.current?.getBoundingClientRect().width ?? 150; // fire scales with the logo
     const puffs = Array.from(wrap.querySelectorAll<HTMLElement>("[data-puff]"));
     const ctx = gsap.context(() => {
-      gsap.set(puffs, { autoAlpha: 0, xPercent: -50, yPercent: -50, width: unit * 0.26, height: unit * 0.2 });
+      gsap.set(puffs, { autoAlpha: 0, xPercent: -50, yPercent: -50, width: unit * 0.26, height: unit * 0.2, force3D: true });
+      // each puff keeps one fixed colour (yellow to red); animating a filter on every puff was too heavy for phones
+      puffs.forEach((el) => { el.style.filter = `hue-rotate(${-gsap.utils.random(0, 26)}deg)`; });
       puffs.forEach((el, i) => {
         // The flame leaves the open jaw heading left and a little down (the mouth opens down-left)
         const dist = unit * gsap.utils.random(0.8, 2.1);
         const life = gsap.utils.random(0.65, 1.05);
-        const delay = 0.5 + (i / puffs.length) * 0.9; // the breath builds: puffs start one after another
+        const delay = 0.3 + (i / puffs.length) * 0.7; // the breath builds: puffs start one after another
         const angle = () => gsap.utils.random(12, 34) * (Math.PI / 180);
-        gsap.fromTo(el, { x: 0, y: 0, scale: 0.4, scaleX: 0.8, filter: "hue-rotate(0deg) brightness(1.15)" }, {
+        gsap.fromTo(el, { x: 0, y: 0, scale: 0.4, scaleX: 0.8 }, {
           x: () => -dist * Math.cos(angle()),
           y: () => dist * 0.6 * Math.sin(angle()) - unit * gsap.utils.random(0, 0.1),
           scale: () => gsap.utils.random(1.2, 2),
           scaleX: () => gsap.utils.random(1.6, 2.6),
-          filter: "hue-rotate(-24deg) brightness(0.8)",
           duration: life, ease: "none", repeat: -1, repeatRefresh: true, delay,
         });
         gsap.to(el, { keyframes: [{ autoAlpha: 1, duration: life * 0.1, ease: "none" }, { autoAlpha: 0, duration: life * 0.9, ease: "power1.in" }], repeat: -1, delay });
       });
       gsap.set(wrap.querySelector('[data-core]'), { width: unit * 0.13, height: unit * 0.13, left: 0, top: 0, xPercent: -50, yPercent: -50 });
       // a bright core at the mouth that pulses like a pilot flame
-      gsap.fromTo(wrap.querySelector('[data-core]'), { scale: 0.8, autoAlpha: 0 }, { scale: 1.25, autoAlpha: 1, duration: 0.16, delay: 0.5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      gsap.fromTo(wrap.querySelector('[data-core]'), { scale: 0.8, autoAlpha: 0 }, { scale: 1.25, autoAlpha: 1, duration: 0.16, delay: 0.3, repeat: -1, yoyo: true, ease: "sine.inOut" });
       // a slow flicker over the whole flame
       gsap.to(wrap, { opacity: 0.88, duration: 0.14, repeat: -1, yoyo: true, ease: "none" });
     }, wrap);
@@ -130,7 +132,7 @@ export function Preloader() {
       {rect && (
         <div ref={fireWrap} aria-hidden="true" className="preloader__fire" style={{ left: rect.left + rect.width * 0.1, top: rect.top + rect.height * 0.665 }}>
           <span data-core className="preloader__core" />
-          {Array.from({ length: 70 }, (_, i) => <span key={i} data-puff className="preloader__puff" />)}
+          {Array.from({ length: 40 }, (_, i) => <span key={i} data-puff className="preloader__puff" />)}
         </div>
       )}
       {rect && (
