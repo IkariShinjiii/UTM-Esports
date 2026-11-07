@@ -206,7 +206,7 @@ Blocks below the fold rise 32px and fade in over about 1.1 seconds when first sc
 
 ## Motion
 
-Motion is on purpose and limited: the hero dragon, the picture shuffle, the logo bar, the tile wipe, the More menu drop, the loading skeleton and the scroll reveal. All of it uses transform and opacity (the eye blink uses a small clip), and all of it respects the reduced-motion setting.
+Motion is on purpose and limited: the first-visit intro, the hero dragon, the picture shuffle, the logo bar, the tile wipe, the More menu drop, the loading skeleton and the scroll reveal. All of it uses transform and opacity (the eye blink uses a small clip), and all of it respects the reduced-motion setting.
 
 - **Hero dragon:** meant to be felt more than seen, like a flying dragon in a headwind.
   - The whole mark drifts slowly (8.5 s) and breathes (4.8 s): the head rises and settles with a hair of scale.
@@ -214,7 +214,11 @@ Motion is on purpose and limited: the hero dragon, the picture shuffle, the logo
   - About every 11 seconds a gust leans the whole mane back a touch (under 1 degree, a 1% stretch) and lets it go.
   - The eye blinks at uneven moments on a 13.7 s cycle: a blink, a double blink, a blink. Closing is quicker than opening.
   - Cycle lengths differ so the motion never repeats in step.
-- **Reduced motion:** the dragon holds still (every layer), the picture shuffle starts paused, the logo bar becomes a scrollable row, the skeleton band stops, the menu drop is skipped, and the scroll reveal keeps only a plain fade.
+- **First-visit intro (once per session, `?intro` replays it):** a warm-ink screen where the white logo rises in and a light sweeps across it. The dragon breathes flat flame blades out of its mouth, then the flames snap back, the logo flies up into the nav and the screen lifts away (GSAP, about 3.5 s).
+  - The fire follows the site's own rules: flat, hard-edged shapes in Cut Red, Flame Red and white, drawn like the flames in the logo's mane. No blur, no glow, no yellow or orange.
+  - Six blades fan out of the mouth, longest underneath, each made of three nested layers that flicker on their own beat. Each blade is one small element moved with transforms only.
+  - It is skipped for reduced motion and for repeat visits in the same tab.
+- **Reduced motion:** the intro is skipped, the dragon holds still (every layer), the picture shuffle starts paused, the logo bar becomes a scrollable row, the skeleton band stops, the menu drop is skipped, and the scroll reveal keeps only a plain fade.
 - The shuffle and logo bar also pause on hover, focus and touch-hold, and offer a Pause button for keyboard users.
 
 ## Do's and Don'ts

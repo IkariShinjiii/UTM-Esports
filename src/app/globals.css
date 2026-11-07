@@ -469,26 +469,24 @@ html[data-intro="skip"] .preloader {
   width: 0;
   height: 0;
   pointer-events: none;
-  mix-blend-mode: screen;
 }
-.preloader__core {
+/* The fire is flat flame blades in the logo's own colours: Cut Red outside, Flame Red inside, a white heart */
+.preloader__blade {
   position: absolute;
-  left: -1.4rem;
-  top: -1.4rem;
-  width: 2.8rem;
-  height: 2.8rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff6c8 0%, #ffc83c 35%, rgba(255, 104, 28, 0.5) 65%, rgba(255, 104, 28, 0) 100%);
-  opacity: 0;
+  right: 0;
+  will-change: transform;
 }
-.preloader__puff {
+.preloader__layer {
   position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(255, 246, 200, 0.95) 0%, rgba(255, 200, 60, 0.8) 18%, rgba(255, 104, 28, 0.5) 42%, rgba(212, 35, 43, 0.2) 68%, rgba(212, 35, 43, 0) 100%);
-  will-change: transform, opacity;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
 }
+.fl-cut { fill: #b3151b; }
+.fl-flame { fill: #e4181e; }
+.fl-core { fill: #ffffff; }
 /* While the intro plays: hold the hero's entrance and keep the nav logo hidden until the flying copy lands */
 .is-loading .hero-rise {
   animation-play-state: paused;

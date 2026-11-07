@@ -6,6 +6,20 @@ import { gsap } from "gsap";
 const MIN_MS = 2200; // the dragon breathes fire for at least this long
 const FLY = 1.5; // seconds the logo takes to travel into the nav
 
+// One flame blade: pointed at the tip (left) and at the neck (right, where it leaves the mouth), drawn in a 100 x 32 box
+const FLAME = "M100 16C88 6 70 1 50 5C32 9 16 8 0 13C18 17 30 26 52 27C74 28 90 22 100 16Z";
+// The blades fan out of the mouth, longest underneath. len is in logo widths, rot in degrees (negative = down-left).
+const BLADES = [
+  { len: 2.1, rot: -6, flip: 1 },
+  { len: 1.8, rot: -16, flip: -1 },
+  { len: 1.9, rot: 3, flip: -1 },
+  { len: 1.4, rot: -24, flip: 1 },
+  { len: 1.5, rot: 9, flip: 1 },
+  { len: 1.1, rot: -11, flip: -1 },
+];
+// The three layers inside each blade, as a share of its length and thickness
+const LAYERS = [{ x: 1, y: 1 }, { x: 0.82, y: 0.62 }, { x: 0.5, y: 0.3 }];
+
 export const INTRO_KEY = "utm-intro-seen";
 
 // Runs in <head>-adjacent markup before React: marks the page as loading (so the hero holds its entrance and the
@@ -68,8 +82,11 @@ export function Preloader() {
       const dy = target ? target.top + target.height / 2 - (from.top + from.height / 2) : 0;
       const scale = target ? target.height / from.height : 1;
       const end = 0.3 + FLY;
+      const blades = fireWrap.current ? Array.from(fireWrap.current.querySelectorAll("[data-blade]")) : [];
       tl = gsap.timeline({ onComplete: finish });
-      tl.to(fireWrap.current, { autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 0)
+      // the flames snap back into the mouth as the logo sets off
+      tl.to(blades, { scaleX: 0, duration: 0.26, ease: "power2.in", stagger: 0.03 }, 0)
+        .set(fireWrap.current, { autoAlpha: 0 }, 0.5)
         .to(fly.current, { x: dx, y: dy, scale, duration: FLY, ease: "power3.inOut" }, 0.3)
         .to(screen.current, { yPercent: -100, duration: FLY * 0.75, ease: "power3.inOut" }, 0.7)
         .add(() => { html.classList.remove("is-loading"); html.style.overflow = ""; }, 1.1)
@@ -85,38 +102,37 @@ export function Preloader() {
     };
   }, []);
 
-  // The dragon breathes fire out of its mouth (to the left) while the page loads: a stream of glowing puffs that
-  // grow, drift up and fade, each one cooling from yellow to red. All driven by GSAP.
+  // The dragon breathes fire out of its mouth (to the left): flat flame blades that shoot out one after another, then
+  // flicker (each layer on its own beat) until the logo sets off. All driven by GSAP.
   useEffect(() => {
     if (!hasRect || !fireWrap.current) return;
     if (document.documentElement.getAttribute("data-intro") === "skip") return;
     const wrap = fireWrap.current;
     const unit = slot.current?.getBoundingClientRect().width ?? 150; // fire scales with the logo
-    const puffs = Array.from(wrap.querySelectorAll<HTMLElement>("[data-puff]"));
+    const room = parseFloat(wrap.style.left) - 8; // space left of the mouth, so the flames never leave the screen
+    const blades = Array.from(wrap.querySelectorAll<HTMLElement>("[data-blade]"));
     const ctx = gsap.context(() => {
-      gsap.set(puffs, { autoAlpha: 0, xPercent: -50, yPercent: -50, width: unit * 0.26, height: unit * 0.2, force3D: true });
-      // each puff keeps one fixed colour (yellow to red); animating a filter on every puff was too heavy for phones
-      puffs.forEach((el) => { el.style.filter = `hue-rotate(${-gsap.utils.random(0, 26)}deg)`; });
-      puffs.forEach((el, i) => {
-        // The flame leaves the open jaw heading left and a little down (the mouth opens down-left)
-        const dist = unit * gsap.utils.random(0.8, 2.1);
-        const life = gsap.utils.random(0.65, 1.05);
-        const delay = 0.3 + (i / puffs.length) * 0.7; // the breath builds: puffs start one after another
-        const angle = () => gsap.utils.random(12, 34) * (Math.PI / 180);
-        gsap.fromTo(el, { x: 0, y: 0, scale: 0.4, scaleX: 0.8 }, {
-          x: () => -dist * Math.cos(angle()),
-          y: () => dist * 0.6 * Math.sin(angle()) - unit * gsap.utils.random(0, 0.1),
-          scale: () => gsap.utils.random(1.2, 2),
-          scaleX: () => gsap.utils.random(1.6, 2.6),
-          duration: life, ease: "none", repeat: -1, repeatRefresh: true, delay,
+      blades.forEach((el, i) => {
+        const b = BLADES[i];
+        const len = Math.min(unit * b.len, room);
+        const h = len * 0.2;
+        gsap.set(el, { width: len, height: h, top: -h / 2, rotation: b.rot, scaleY: b.flip, scaleX: 0, transformOrigin: "100% 50%" });
+        el.querySelectorAll<SVGSVGElement>("[data-layer]").forEach((layer, j) => {
+          const base = LAYERS[j];
+          gsap.set(layer, { scaleX: base.x, scaleY: base.y, transformOrigin: "100% 50%" });
+          gsap.to(layer, {
+            scaleX: () => base.x * gsap.utils.random(0.8, 0.95),
+            scaleY: () => base.y * gsap.utils.random(0.85, 1.05),
+            duration: () => gsap.utils.random(0.13, 0.24),
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            repeatRefresh: true,
+            delay: 0.9 + gsap.utils.random(0, 0.2),
+          });
         });
-        gsap.to(el, { keyframes: [{ autoAlpha: 1, duration: life * 0.1, ease: "none" }, { autoAlpha: 0, duration: life * 0.9, ease: "power1.in" }], repeat: -1, delay });
       });
-      gsap.set(wrap.querySelector('[data-core]'), { width: unit * 0.13, height: unit * 0.13, left: 0, top: 0, xPercent: -50, yPercent: -50 });
-      // a bright core at the mouth that pulses like a pilot flame
-      gsap.fromTo(wrap.querySelector('[data-core]'), { scale: 0.8, autoAlpha: 0 }, { scale: 1.25, autoAlpha: 1, duration: 0.16, delay: 0.3, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      // a slow flicker over the whole flame
-      gsap.to(wrap, { opacity: 0.88, duration: 0.14, repeat: -1, yoyo: true, ease: "none" });
+      gsap.to(blades, { scaleX: 1, duration: 0.4, ease: "power3.out", stagger: 0.07, delay: 0.25 });
     }, wrap);
     return () => ctx.revert();
   }, [hasRect]);
@@ -131,8 +147,15 @@ export function Preloader() {
       </div>
       {rect && (
         <div ref={fireWrap} aria-hidden="true" className="preloader__fire" style={{ left: rect.left + rect.width * 0.1, top: rect.top + rect.height * 0.665 }}>
-          <span data-core className="preloader__core" />
-          {Array.from({ length: 40 }, (_, i) => <span key={i} data-puff className="preloader__puff" />)}
+          {BLADES.map((_, i) => (
+            <div key={i} data-blade className="preloader__blade">
+              {["fl-cut", "fl-flame", "fl-core"].map((c) => (
+                <svg key={c} data-layer viewBox="0 0 100 32" preserveAspectRatio="none" className={`preloader__layer ${c}`}>
+                  <path d={FLAME} />
+                </svg>
+              ))}
+            </div>
+          ))}
         </div>
       )}
       {rect && (
