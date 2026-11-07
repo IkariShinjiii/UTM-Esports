@@ -214,7 +214,7 @@ Motion is on purpose and limited: the first-visit intro, the hero dragon, the pi
   - About every 11 seconds a gust leans the whole mane back a touch (under 1 degree, a 1% stretch) and lets it go.
   - The eye blinks at uneven moments on a 13.7 s cycle: a blink, a double blink, a blink. Closing is quicker than opening.
   - Cycle lengths differ so the motion never repeats in step.
-- **First-visit intro (once per session, `?intro` replays it):** a warm-ink screen where the white logo rises in and a light sweeps across it. The dragon breathes flat flame blades out of its mouth, then the flames snap back, the logo flies up into the nav and the screen lifts away (GSAP, about 3.5 s).
+- **First-visit intro (once per session, `?intro` replays it):** a warm-ink screen where the white logo rises in and a light sweeps across it. A flat Flame Red loading bar (a slanted slot, no glow) fills under it, then the logo flies up into the nav and the screen lifts away (GSAP, about 3.5 s).
   - The fire follows the site's own rules: flat, hard-edged shapes in Cut Red, Flame Red and white, drawn like the flames in the logo's mane. No blur, no glow, no yellow or orange.
   - Six blades fan out of the mouth, longest underneath, each made of three nested layers that flicker on their own beat. Each blade is one small element moved with transforms only.
   - It is skipped for reduced motion and for repeat visits in the same tab.
