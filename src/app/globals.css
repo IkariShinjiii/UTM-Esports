@@ -434,10 +434,23 @@ p {
 html[data-intro="skip"] .preloader {
   display: none;
 }
+/* The logo and the empty box that reserves its place share one size; the logo sits where that box sits: centred, with the
+   loading bar (6px + 2.25rem gap) counted in the centred group */
+.preloader__logo,
+.preloader__spacer {
+  --logo-w: clamp(6.5rem, 20vw, 9.5rem);
+  width: var(--logo-w);
+  height: calc(var(--logo-w) * 325 / 360);
+}
 .preloader__logo {
   position: fixed;
   z-index: 101;
   pointer-events: none;
+  left: calc(50% - var(--logo-w) / 2);
+  top: calc(50% - (var(--logo-w) * 325 / 360 + 2.25rem + 6px) / 2);
+}
+html[data-intro="skip"] .preloader__logo {
+  display: none;
 }
 .preloader__mark {
   position: relative;

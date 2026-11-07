@@ -51,7 +51,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${sans.variable} ${display.variable} antialiased`}>
         <script dangerouslySetInnerHTML={{ __html: introGuard }} />
-        <noscript><style>{".preloader{display:none}"}</style></noscript>
+        <noscript><style>{".preloader,.preloader__logo{display:none}"}</style></noscript>
         <Preloader />
         {children}
         <ScrollProgress />
