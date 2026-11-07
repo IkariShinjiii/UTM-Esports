@@ -463,31 +463,20 @@ html[data-intro="skip"] .preloader {
   0% { background-position: 140% 0; }
   to { background-position: -40% 0; }
 }
-.preloader__fire {
-  position: fixed;
-  z-index: 100;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-  mix-blend-mode: screen;
+/* Loading bar under the logo: a flat dark-red slot with a Flame Red fill, cut at the site's slant */
+.preloader__bar {
+  width: clamp(9rem, 28vw, 13rem);
+  height: 6px;
+  margin: 2.25rem auto 0;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  background-color: rgba(212, 35, 43, 0.28);
 }
-.preloader__core {
-  position: absolute;
-  left: -1.4rem;
-  top: -1.4rem;
-  width: 2.8rem;
-  height: 2.8rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff6c8 0%, #ffc83c 35%, rgba(255, 104, 28, 0.5) 65%, rgba(255, 104, 28, 0) 100%);
-  opacity: 0;
-}
-.preloader__puff {
-  position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(255, 246, 200, 0.95) 0%, rgba(255, 200, 60, 0.8) 18%, rgba(255, 104, 28, 0.5) 42%, rgba(212, 35, 43, 0.2) 68%, rgba(212, 35, 43, 0) 100%);
-  will-change: transform, opacity;
+.preloader__fill {
+  width: 100%;
+  height: 100%;
+  background: #e4181e;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
 }
 /* While the intro plays: hold the hero's entrance and keep the nav logo hidden until the flying copy lands */
 .is-loading .hero-rise {

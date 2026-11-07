@@ -39,7 +39,7 @@ export default async function ResultPage({ params }: { params: Promise<{ slug: s
       <Nav />
       <main id="content" className="on-dark tex-dark relative bg-ink pb-24 pt-10 text-white md:pt-14">
         <div className={wrap}>
-          <BackButton fallback="/results" />
+          <BackButton fallback="/#results" />
           <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
             <span
               className={`block px-5 py-1.5 font-display text-xl font-extrabold italic uppercase leading-none ${champion ? "bg-track text-white" : "bg-white text-ink"}`}
