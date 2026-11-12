@@ -168,7 +168,7 @@ body {
   opacity: var(--gop, 0.2);
 }
 
-/* Textures: drawn in code (no image files), faint, always behind the content.
+/* Textures: faint, always behind the content. The grain is a small pre-rendered tile (public/images/grain-*.webp, made from an feTurbulence noise filter): drawing the filter live was the slowest thing on a phone.
    - tex-dark: film grain + the hexagon mesh from the jersey fabric
    - tex-red: speed lines at the jaw angle (from the Crimson Cloudburst graphic) + grain
    - tex-light: a whisper of paper grain on white */
@@ -190,18 +190,21 @@ body {
 .tex-dark::before {
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='48'%3E%3Cpath d='M14 0v8l14 8v16l-14 8v8M14 8L0 16v16l14 8' fill='none' stroke='white' stroke-opacity='.07' stroke-width='1'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 -.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    url("/images/grain-white.webp");
+  background-size: auto, 128px 128px;
   opacity: 0.38;
 }
 .tex-red::before {
   background-image:
     repeating-linear-gradient(108deg, transparent 0 46px, rgb(255 255 255 / 0.1) 46px 48px, transparent 48px 120px),
     repeating-linear-gradient(108deg, transparent 0 83px, rgb(0 0 0 / 0.14) 83px 87px, transparent 87px 190px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 -.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    url("/images/grain-white.webp");
+  background-size: auto, auto, 128px 128px;
   opacity: 0.4;
 }
 .tex-light::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .09 0 0 0 0 .04 0 0 0 0 .04 0 0 0 .7 -.28'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("/images/grain-dark.webp");
+  background-size: 128px 128px;
   opacity: 0.45;
 }
 
@@ -434,10 +437,23 @@ p {
 html[data-intro="skip"] .preloader {
   display: none;
 }
+/* The logo and the empty box that reserves its place share one size; the logo sits where that box sits: centred, with the
+   loading bar (6px + 2.25rem gap) counted in the centred group */
+.preloader__logo,
+.preloader__spacer {
+  --logo-w: clamp(6.5rem, 20vw, 9.5rem);
+  width: var(--logo-w);
+  height: calc(var(--logo-w) * 325 / 360);
+}
 .preloader__logo {
   position: fixed;
   z-index: 101;
   pointer-events: none;
+  left: calc(50% - var(--logo-w) / 2);
+  top: calc(50% - (var(--logo-w) * 325 / 360 + 2.25rem + 6px) / 2);
+}
+html[data-intro="skip"] .preloader__logo {
+  display: none;
 }
 .preloader__mark {
   position: relative;
